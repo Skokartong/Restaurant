@@ -1,6 +1,11 @@
-﻿namespace Restaurant.Data.Repos.IRepos
+﻿using Restaurant.Models;
+
+namespace Restaurant.Data.Repos.IRepos
 {
-    public class IRestaurantRepository
+    public interface IRestaurantRepository
     {
+        Task AddRestaurantAsync(Models.Restaurant restaurant);
+        Task DeleteRestaurantAsync(int restaurantId);
+        Task<Models.Restaurant> UpdateRestaurantAsync(int restaurantId, Models.Restaurant updatedRestaurant);
     }
 }
