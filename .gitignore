@@ -1,0 +1,4 @@
+﻿# Ignore environment variable files
+.env
+
+.vs/
