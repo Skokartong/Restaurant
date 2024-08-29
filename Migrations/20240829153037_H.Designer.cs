@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Restaurant.Data;
 
@@ -11,9 +12,11 @@ using Restaurant.Data;
 namespace Restaurant.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20240829153037_H")]
+    partial class H
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,9 +38,6 @@ namespace Restaurant.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<int?>("FK_RestaurantId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(30)
@@ -47,9 +47,12 @@ namespace Restaurant.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("int");
 
+                    b.Property<int?>("RestaurantId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("FK_RestaurantId");
+                    b.HasIndex("RestaurantId");
 
                     b.ToTable("Customers");
                 });
@@ -125,10 +128,7 @@ namespace Restaurant.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("BookingEnd")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("BookingStart")
+                    b.Property<DateTime>("BookingDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("FK_CustomerId")
@@ -196,11 +196,9 @@ namespace Restaurant.Migrations
 
             modelBuilder.Entity("Restaurant.Models.Customer", b =>
                 {
-                    b.HasOne("Restaurant.Models.Restaurant", "Restaurant")
+                    b.HasOne("Restaurant.Models.Restaurant", null)
                         .WithMany("Customers")
-                        .HasForeignKey("FK_RestaurantId");
-
-                    b.Navigation("Restaurant");
+                        .HasForeignKey("RestaurantId");
                 });
 
             modelBuilder.Entity("Restaurant.Models.Menu", b =>
@@ -215,7 +213,7 @@ namespace Restaurant.Migrations
             modelBuilder.Entity("Restaurant.Models.Order", b =>
                 {
                     b.HasOne("Restaurant.Models.Customer", "Customer")
-                        .WithMany("Orders")
+                        .WithMany()
                         .HasForeignKey("FK_CustomerId");
 
                     b.HasOne("Restaurant.Models.Menu", "Menu")
@@ -255,11 +253,6 @@ namespace Restaurant.Migrations
                         .HasForeignKey("FK_RestaurantId");
 
                     b.Navigation("Restaurant");
-                });
-
-            modelBuilder.Entity("Restaurant.Models.Customer", b =>
-                {
-                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Restaurant.Models.Restaurant", b =>

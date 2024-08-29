@@ -14,33 +14,34 @@ namespace Restaurant.Data.Repos
 
         public async Task AddReservationAsync(Reservation reservation)
         {
-            await _context.Reservation.AddAsync(reservation);
+            await _context.Reservations.AddAsync(reservation);
             await _context.SaveChangesAsync();
         }
 
         public async Task DeleteReservationAsync(int reservationId)
         {
-            var reservation = await _context.Reservation.FindAsync(reservationId);
+            var reservation = await _context.Reservations.FindAsync(reservationId);
 
             if (reservation!=null)
             {
-                _context.Reservation.Remove(reservation);
+                _context.Reservations.Remove(reservation);
                 await _context.SaveChangesAsync();
             }
         }
 
         public async Task UpdateReservationAsync(int reservationId, Reservation updatedReservation)
         {
-            var reservation = await _context.Reservation.FindAsync(reservationId);
+            var reservation = await _context.Reservations.FindAsync(reservationId);
 
             if (reservation!=null)
             {
                 reservation.FK_CustomerId = updatedReservation.FK_CustomerId;
                 reservation.NumberOfGuests = updatedReservation.NumberOfGuests;
-                reservation.BookingDate = updatedReservation.BookingDate;
+                reservation.BookingStart = updatedReservation.BookingStart;
+                reservation.BookingEnd = updatedReservation.BookingEnd;
                 reservation.FK_TableId = updatedReservation.FK_TableId;
 
-                _context.Reservation.Update(reservation);
+                _context.Reservations.Update(reservation);
                 await _context.SaveChangesAsync();
             }
         }

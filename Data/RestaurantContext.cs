@@ -13,7 +13,7 @@ namespace Restaurant.Data
 
         public DbSet<Models.Restaurant> Restaurants{ get; set; }
 
-        public DbSet<Reservation> Reservation { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
 
         public DbSet<Menu> Menus { get; set; }
 

@@ -16,9 +16,10 @@ namespace Restaurant.Models
         [Required]
         [MaxLength(30)]
         public string Email { get; set; }
-        // Foreign key restaurant to link customers to specific restaurant
+
         [ForeignKey("Restaurant")]
-        public int FK_RestaurantId { get; set; }
+        public int? FK_RestaurantId { get; set; }
         public Restaurant Restaurant { get; set; }
+        public ICollection<Order> Orders { get; set; }
     }
 }

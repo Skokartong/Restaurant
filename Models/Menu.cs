@@ -7,19 +7,18 @@ namespace Restaurant.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
         [MaxLength(30)]
         public string? NameOfDish { get; set; }
-        [Required]
         [MaxLength(30)]
         public string? Drink { get; set; }
         [Required]
         public bool IsAvailable { get; set; }
         [Required]
         public double Price { get; set; }
+
         // Foreign key to map each menu to one particular restaurant
         [ForeignKey("Restaurant")]
-        public int FK_RestaurantId { get; set; }
+        public int? FK_RestaurantId { get; set; }
         public Restaurant Restaurant { get; set; }
     }
 }

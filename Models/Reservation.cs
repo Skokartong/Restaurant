@@ -10,14 +10,18 @@ namespace Restaurant.Models
         [Required]
         public int NumberOfGuests { get; set; }
         [Required]
-        public DateTime BookingDate { get; set; }
-        // Each booking has one customer linked to it
+        public DateTime BookingStart { get; set; }
+        [Required]
+        public DateTime BookingEnd { get; set; }
+
+        // Each booking has a customer linked to it
         [ForeignKey("Customer")]
-        public int FK_CustomerId { get; set; }
+        public int? FK_CustomerId { get; set; }
         public Customer Customer { get; set; }
-        // Each booking though, can consist of multiple tables (if the company is big)
+
+        // Each booking has a table linked to it
         [ForeignKey("Table")]
-        public int FK_TableId { get; set; }
-        public ICollection<Table> Tables { get; set; }
+        public int? FK_TableId { get; set; }
+        public Table Table { get; set; }
     }
 }
