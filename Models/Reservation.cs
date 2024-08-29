@@ -14,12 +14,10 @@ namespace Restaurant.Models
         [Required]
         public DateTime BookingEnd { get; set; }
 
-        // Each booking has a customer linked to it
         [ForeignKey("Customer")]
         public int? FK_CustomerId { get; set; }
         public Customer Customer { get; set; }
 
-        // Each booking has a table linked to it
         [ForeignKey("Table")]
         public int? FK_TableId { get; set; }
         public Table Table { get; set; }

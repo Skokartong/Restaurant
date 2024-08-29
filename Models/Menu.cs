@@ -16,7 +16,6 @@ namespace Restaurant.Models
         [Required]
         public double Price { get; set; }
 
-        // Foreign key to map each menu to one particular restaurant
         [ForeignKey("Restaurant")]
         public int? FK_RestaurantId { get; set; }
         public Restaurant Restaurant { get; set; }

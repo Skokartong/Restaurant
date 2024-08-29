@@ -15,27 +15,78 @@ namespace Restaurant.Services
         }
         public async Task AddCustomerAsync(CustomerDTO customerDTO)
         {
-            throw new NotImplementedException();
+            var customer = new Customer
+            {
+                Name = customerDTO.Name,
+                Phone = customerDTO.Phone,
+                Email = customerDTO.Email,
+                FK_RestaurantId = customerDTO.FK_RestaurantId
+            };
+
+            await _customerRepository.AddCustomerAsync(customer);
         }
 
         public async Task DeleteCustomerAsync(int customerId)
         {
-            throw new NotImplementedException();
+            await _customerRepository.DeleteCustomerAsync(customerId);
         }
 
         public async Task<CustomerDTO> SearchCustomerAsync(int customerId)
         {
-            throw new NotImplementedException();
+            var customer = await _customerRepository.SearchCustomerAsync(customerId);
+
+            if (customer==null)
+            {
+                return null;
+            }
+
+            return new CustomerDTO
+            {
+                Name = customer.Name,
+                Email = customer.Email,
+                Phone = customer.Phone,
+                FK_RestaurantId = customer.FK_RestaurantId
+            };
         }
 
         public async Task<IEnumerable<CustomerDTO>> SeeAllCustomersAsync(string restaurantName)
         {
-            throw new NotImplementedException();
+            var customersList = await _customerRepository.SeeAllCustomersAsync(restaurantName);
+
+            if (customersList==null)
+            {
+                return null;
+            }
+
+            return customersList.Select(c => new CustomerDTO
+            {
+                Name = c.Name,
+                Email = c.Email,
+                Phone = c.Phone,
+                FK_RestaurantId = c.FK_RestaurantId
+
+            }).ToList();
         }
 
-        public async Task<CustomerDTO> UpdateCustomerAsync(int customerId, Customer updatedCustomer)
+        public async Task<CustomerDTO> UpdateCustomerAsync(int customerId, CustomerDTO updatedCustomerDTO)
         {
-            throw new NotImplementedException();
+            var updatedCustomer = new Customer
+            {
+                Name = updatedCustomerDTO.Name,
+                Phone = updatedCustomerDTO.Phone,
+                Email = updatedCustomerDTO.Email,
+                FK_RestaurantId = updatedCustomerDTO.FK_RestaurantId
+            };
+
+            await _customerRepository.UpdateCustomerAsync(customerId, updatedCustomer);
+
+            return new CustomerDTO
+            {
+                Name = updatedCustomer.Name,
+                Phone = updatedCustomer.Phone,
+                Email = updatedCustomer.Email,
+                FK_RestaurantId = updatedCustomer.FK_RestaurantId
+            };
         }
     }
 }
