@@ -5,8 +5,9 @@ namespace Restaurant.Data.Repos.IRepos
     public interface IOrderRepository
     {
         Task AddOrderAsync(Order order);
-        Task<Order> UpdateOrderAsync(int orderId, Order updatedOrder);
+        Task UpdateOrderAsync(int orderId, Order updatedOrder);
         Task DeleteOrderAsync(int orderId);
-        Task SearchOrder(int orderId);
+        Task<Order> SearchOrderAsync(int orderId);
+        Task<List<Order>> SeeAllOrdersFromTableAsync(int tableId);
     }
 }

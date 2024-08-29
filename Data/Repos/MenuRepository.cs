@@ -1,4 +1,5 @@
-﻿using Restaurant.Data.Repos.IRepos;
+﻿using Microsoft.EntityFrameworkCore;
+using Restaurant.Data.Repos.IRepos;
 using Restaurant.Models;
 
 namespace Restaurant.Data.Repos
@@ -14,22 +15,45 @@ namespace Restaurant.Data.Repos
 
         public async Task AddDishOrDrinkAsync(Menu menuItem)
         {
-            throw new NotImplementedException();
+            await _context.Menus.AddAsync(menuItem);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteDishOrDrinkAsync(int menuId)
         {
-            throw new NotImplementedException();
+            var deleteItem = await _context.Menus.FindAsync(menuId);
+
+            if(deleteItem!=null)
+            {
+                _context.Menus.Remove(deleteItem);
+            }
+
+            await _context.SaveChangesAsync();
         }
 
-        public async Task SeeMenuAsync(string restaurantName)
+        public async Task<List<Menu>> SeeMenuAsync(int restaurantId)
         {
-            throw new NotImplementedException();
+            var viewMenu = await _context.Menus
+                                 .Where(m => m.FK_RestaurantId == restaurantId)
+                                 .ToListAsync();
+            return viewMenu;
         }
 
-        public async Task<Menu> UpdateDishOrDrinkAsync(int menuId, Menu menuItem)
+        public async Task UpdateDishOrDrinkAsync(int menuId, Menu updateMenu)
         {
-            throw new NotImplementedException();
+            var menuItem = await _context.Menus.FindAsync(menuId);
+            
+            if(menuItem!=null)
+            {
+                menuItem.FK_RestaurantId = updateMenu.FK_RestaurantId;
+                menuItem.Drink = updateMenu.Drink;
+                menuItem.NameOfDish = updateMenu.NameOfDish;
+                menuItem.Price = updateMenu.Price;
+                menuItem.IsAvailable = updateMenu.IsAvailable;
+
+                _context.Menus.Update(menuItem);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

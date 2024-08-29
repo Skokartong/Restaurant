@@ -6,6 +6,6 @@ namespace Restaurant.Data.Repos.IRepos
     {
         Task AddRestaurantAsync(Models.Restaurant restaurant);
         Task DeleteRestaurantAsync(int restaurantId);
-        Task<Models.Restaurant> UpdateRestaurantAsync(int restaurantId, Models.Restaurant updatedRestaurant);
+        Task UpdateRestaurantAsync(int restaurantId, Models.Restaurant updatedRestaurant);
     }
 }

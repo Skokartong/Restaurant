@@ -137,3 +137,4 @@ C:\Users\Amanda\Documents\Visual Studio 2022\Templates\ProjectTemplates\C#\Resta
 C:\Users\Amanda\Documents\Visual Studio 2022\Templates\ProjectTemplates\C#\Restaurant\obj\Debug\net8.0\Restaurant.pdb
 C:\Users\Amanda\Documents\Visual Studio 2022\Templates\ProjectTemplates\C#\Restaurant\obj\Debug\net8.0\Restaurant.genruntimeconfig.cache
 C:\Users\Amanda\Documents\Visual Studio 2022\Templates\ProjectTemplates\C#\Restaurant\obj\Debug\net8.0\ref\Restaurant.dll
+C:\Users\Amanda\Documents\Visual Studio 2022\Templates\ProjectTemplates\C#\Restaurant\obj\Debug\net8.0\Restaurant.sourcelink.json

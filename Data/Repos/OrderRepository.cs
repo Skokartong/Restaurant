@@ -1,4 +1,5 @@
-﻿using Restaurant.Data.Repos.IRepos;
+﻿using Microsoft.EntityFrameworkCore;
+using Restaurant.Data.Repos.IRepos;
 using Restaurant.Models;
 
 namespace Restaurant.Data.Repos
@@ -14,22 +15,69 @@ namespace Restaurant.Data.Repos
 
         public async Task AddOrderAsync(Order order)
         {
-            throw new NotImplementedException();
+            await _context.Orders.AddAsync(order);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteOrderAsync(int orderId)
         {
-            throw new NotImplementedException();
+            var order = await _context.Orders.FindAsync(orderId);
+            if (order != null)
+            {
+                _context.Orders.Remove(order);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public async Task SearchOrder(int orderId)
+        public async Task<Order> SearchOrderAsync(int orderId)
         {
-            throw new NotImplementedException();
+            var order = await _context.Orders
+                .Include(o => o.Menu)
+                .Include(o => o.Customer)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            return order;
         }
 
-        public async Task<Order> UpdateOrderAsync(int orderId, Order updatedOrder)
+        public async Task<List<Order>> SeeAllOrdersFromTableAsync(int tableId)
         {
-            throw new NotImplementedException();
+            var orders = await _context.Orders
+                           .Where(o => o.FK_TableId == tableId)  
+                           .Include(o => o.Customer) 
+                           .Include(o => o.Menu)      
+                           .ToListAsync();            
+
+            return orders;
+        }
+
+        public async Task UpdateOrderAsync(int orderId, Order updatedOrder)
+        {
+                var order = await _context.Orders
+                                          .Include(o => o.Menu)
+                                          .Include(o => o.Customer)
+                                          .FirstOrDefaultAsync(o => o.Id == orderId);
+
+                if (order != null)
+                {
+                    order.Amount = updatedOrder.Amount;
+                    order.FK_TableId = updatedOrder.FK_TableId;
+
+                    if (order.FK_MenuId != updatedOrder.FK_MenuId)
+                    {
+                        order.FK_MenuId = updatedOrder.FK_MenuId;
+                        order.Menu = updatedOrder.Menu;
+                    }
+
+                    if (order.FK_CustomerId != updatedOrder.FK_CustomerId)
+                    {
+                        order.FK_CustomerId = updatedOrder.FK_CustomerId;
+                        order.Customer = updatedOrder.Customer;
+                    }
+
+                    _context.Orders.Update(order);
+                    await _context.SaveChangesAsync();
+                }
+            }
+
         }
     }
-}

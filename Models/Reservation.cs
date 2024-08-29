@@ -16,6 +16,8 @@ namespace Restaurant.Models
         public int FK_CustomerId { get; set; }
         public Customer Customer { get; set; }
         // Each booking though, can consist of multiple tables (if the company is big)
+        [ForeignKey("Table")]
+        public int FK_TableId { get; set; }
         public ICollection<Table> Tables { get; set; }
     }
 }

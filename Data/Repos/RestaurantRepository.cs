@@ -13,17 +13,31 @@ namespace Restaurant.Data.Repos
 
         public async Task AddRestaurantAsync(Models.Restaurant restaurant)
         {
-            throw new NotImplementedException();
+            await _context.Restaurants.AddAsync(restaurant);
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteRestaurantAsync(int restaurantId)
         {
-            throw new NotImplementedException();
+            var restaurant = await _context.Restaurants.FindAsync(restaurantId);
+
+            if(restaurant!=null)
+            {
+                _context.Restaurants.Remove(restaurant);
+                await _context.SaveChangesAsync();
+            }
         }
 
-        public async Task<Models.Restaurant> UpdateRestaurantAsync(int restaurantId, Models.Restaurant updatedRestaurant)
+        public async Task UpdateRestaurantAsync(int restaurantId, Models.Restaurant updatedRestaurant)
         {
-            throw new NotImplementedException();
+            var restaurant = await _context.Restaurants.FindAsync(restaurantId);
+
+            if(restaurant!=null)
+            {
+                restaurant.RestaurantName = updatedRestaurant.RestaurantName;
+                restaurant.Menus = updatedRestaurant.Menus;
+                restaurant.Customers = updatedRestaurant.Customers;
+            }
         }
     }
 }

@@ -9,12 +9,17 @@ namespace Restaurant.Models
         public int Id { get; set; }
         [Required]
         public int Amount { get; set; }
-        // Usually each restaurant maps each order to a certain table to keep track on things
-        // Each order can consist of multiple booked tables however (for bigger companies)
-        public ICollection<Table> Tables { get; set; }
-        // Foreign key to see if order item is available on menu
+
+        [ForeignKey("Table")]
+        public int FK_TableId { get; set; }
+        public Table Table { get; set; }
+
         [ForeignKey("Menu")]
         public int FK_MenuId { get; set; }
         public Menu Menu { get; set; }
+
+        [ForeignKey("Customer")]
+        public int FK_CustomerId { get; set; }
+        public Customer Customer { get; set; }
     }
 }
