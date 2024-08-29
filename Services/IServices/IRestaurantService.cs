@@ -1,6 +1,11 @@
-﻿namespace Restaurant.Services.IServices
+﻿using Restaurant.Models.DTOs;
+
+namespace Restaurant.Services.IServices
 {
     public interface IRestaurantService
     {
+        Task AddRestaurantAsync(RestaurantDTO restaurantDTO);
+        Task DeleteRestaurantAsync(int restaurantId);
+        Task UpdateRestaurantAsync(int restaurantId, RestaurantDTO updatedRestaurantDTO);
     }
 }
