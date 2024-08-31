@@ -13,6 +13,12 @@ namespace Restaurant.Data.Repos
             _context = context;
         }
 
+        public async Task<Menu?> GetAvailableMenuItemAsync(int menuId)
+        {
+            return await _context.Menus
+                                 .FirstOrDefaultAsync(m => m.Id == menuId && m.IsAvailable);
+        }
+
         public async Task AddDishOrDrinkAsync(Menu menuItem)
         {
             await _context.Menus.AddAsync(menuItem);

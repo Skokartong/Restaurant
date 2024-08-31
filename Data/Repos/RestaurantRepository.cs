@@ -1,4 +1,5 @@
-﻿using Restaurant.Data.Repos.IRepos;
+﻿using Microsoft.EntityFrameworkCore;
+using Restaurant.Data.Repos.IRepos;
 
 namespace Restaurant.Data.Repos
 {
@@ -26,6 +27,30 @@ namespace Restaurant.Data.Repos
                 _context.Restaurants.Remove(restaurant);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<IEnumerable<Models.Restaurant>> GetAllRestaurantsAsync()
+        {
+            var restaurants = await _context.Restaurants.ToListAsync();
+
+            if (restaurants==null)
+            {
+                throw new InvalidCastException("No restaurants available");
+            }
+
+            return restaurants;
+        }
+
+        public async Task<Models.Restaurant> SearchRestaurantAsync(int restaurantId)
+        {
+            var restaurant = await _context.Restaurants.FindAsync(restaurantId);
+
+            if (restaurant == null)
+            {
+                throw new InvalidCastException("No restaurant with that id available");
+            }
+
+            return restaurant;
         }
 
         public async Task UpdateRestaurantAsync(int restaurantId, Models.Restaurant updatedRestaurant)

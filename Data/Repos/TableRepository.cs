@@ -1,4 +1,5 @@
-﻿using Restaurant.Data.Repos.IRepos;
+﻿using Microsoft.EntityFrameworkCore;
+using Restaurant.Data.Repos.IRepos;
 using Restaurant.Models;
 
 namespace Restaurant.Data.Repos
@@ -27,6 +28,18 @@ namespace Restaurant.Data.Repos
                 _context.Tables.Remove(table);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<Table?> GetAvailableTableAsync(int restaurantId, DateTime startTime, DateTime endTime, int numberOfGuests)
+        {
+            var availableTable = await _context.Reservations
+    .Where(r => r.Table.FK_RestaurantId == restaurantId && 
+                r.Table.AmountOfSeats >= numberOfGuests && 
+                !(r.BookingStart < endTime && r.BookingEnd > startTime)) 
+    .Select(r => r.Table) 
+    .FirstOrDefaultAsync(t => t.IsAvailable); 
+
+            return availableTable;
         }
 
         public async Task UpdateTableAsync(int tableId, Table updatedTable)

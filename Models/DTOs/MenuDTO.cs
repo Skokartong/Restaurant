@@ -9,6 +9,6 @@ namespace Restaurant.Models.DTOs
         public string? Drink { get; set; }
         public bool IsAvailable { get; set; }
         public double Price { get; set; }
-        public int? FK_RestaurantId { get; set; }
+        public int FK_RestaurantId { get; set; }
     }
 }

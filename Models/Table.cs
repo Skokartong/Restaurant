@@ -18,7 +18,7 @@ namespace Restaurant.Models
 
         // Each table is linked to a specific restaurant
         [ForeignKey("Restaurant")]
-        public int? FK_RestaurantId { get; set; }
+        public int FK_RestaurantId { get; set; }
         public Restaurant Restaurant { get; set; }  
     }
 }

@@ -20,7 +20,6 @@ namespace Restaurant.Services
                 Name = customerDTO.Name,
                 Phone = customerDTO.Phone,
                 Email = customerDTO.Email,
-                FK_RestaurantId = customerDTO.FK_RestaurantId
             };
 
             await _customerRepository.AddCustomerAsync(customer);
@@ -37,7 +36,7 @@ namespace Restaurant.Services
 
             if (customer==null)
             {
-                return null;
+                throw new InvalidOperationException($"Customer with id {customerId} not found");
             }
 
             return new CustomerDTO
@@ -55,7 +54,7 @@ namespace Restaurant.Services
 
             if (customersList==null)
             {
-                return null;
+                throw new InvalidOperationException($"There is no customers at {restaurantName}");
             }
 
             return customersList.Select(c => new CustomerDTO
@@ -72,10 +71,10 @@ namespace Restaurant.Services
         {
             var updatedCustomer = new Customer
             {
+                Id = customerId,
                 Name = updatedCustomerDTO.Name,
                 Phone = updatedCustomerDTO.Phone,
                 Email = updatedCustomerDTO.Email,
-                FK_RestaurantId = updatedCustomerDTO.FK_RestaurantId
             };
 
             await _customerRepository.UpdateCustomerAsync(customerId, updatedCustomer);

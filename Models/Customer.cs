@@ -18,7 +18,7 @@ namespace Restaurant.Models
         public string Email { get; set; }
 
         [ForeignKey("Restaurant")]
-        public int? FK_RestaurantId { get; set; }
+        public int FK_RestaurantId { get; set; }
         public Restaurant Restaurant { get; set; }
         public ICollection<Order> Orders { get; set; }
     }

@@ -15,11 +15,11 @@ namespace Restaurant.Models
         public DateTime BookingEnd { get; set; }
 
         [ForeignKey("Customer")]
-        public int? FK_CustomerId { get; set; }
+        public int FK_CustomerId { get; set; }
         public Customer Customer { get; set; }
 
         [ForeignKey("Table")]
-        public int? FK_TableId { get; set; }
+        public int FK_TableId { get; set; }
         public Table Table { get; set; }
     }
 }
