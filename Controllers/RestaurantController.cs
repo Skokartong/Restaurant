@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Data.Repos.IRepos;
+using Restaurant.Models.DTOs;
+using Restaurant.Services.IServices;
 
 namespace Restaurant.Controllers
 {
@@ -8,47 +10,42 @@ namespace Restaurant.Controllers
     [ApiController]
     public class RestaurantController : ControllerBase
     {
-        private readonly IRestaurantRepository _restaurantRepository;
+        private readonly IRestaurantService _restaurantService;
 
-        public RestaurantController(IRestaurantRepository restaurantRepository)
+        public RestaurantController(IRestaurantService restaurantService)
         {
-            _restaurantRepository = restaurantRepository;
+            _restaurantService = restaurantService;
         }
 
         [HttpPost]
-        [Route("/add")]
-        public async Task<IActionResult> AddRestaurant(Models.Restaurant restaurant)
+        [Route("/addrestaurant")]
+        public async Task<IActionResult> AddRestaurant([FromBody] RestaurantDTO restaurantDTO)
         {
-            await _restaurantRepository.AddRestaurantAsync(restaurant);
-            return CreatedAtAction(nameof(GetRestaurant), new { id = restaurant.Id }, restaurant);
+            await _restaurantService.AddRestaurantAsync(restaurantDTO);
+            return Ok(restaurantDTO);
         }
 
         [HttpDelete]
-        [Route("/delete/{restaurantId}")]
+        [Route("/deleterestaurant/{restaurantId}")]
         public async Task<IActionResult> DeleteRestaurant(int restaurantId)
         {
-            await _restaurantRepository.DeleteRestaurantAsync(restaurantId);
-            return NoContent();
+            await _restaurantService.DeleteRestaurantAsync(restaurantId);
+            return Ok();
         }
 
         [HttpPut]
-        [Route("/update/{restaurantId}")]
-        public async Task<IActionResult> UpdateRestaurant(int restaurantId, Models.Restaurant restaurant)
+        [Route("/updaterestaurant/{restaurantId}")]
+        public async Task<IActionResult> UpdateRestaurant(int restaurantId, [FromBody] RestaurantDTO updatedRestaurantDTO)
         {
-            if (restaurantId != restaurant.Id)
-            {
-                return BadRequest();
-            }
-
-            await _restaurantRepository.UpdateRestaurantAsync(restaurantId, restaurant);
+            await _restaurantService.UpdateRestaurantAsync(restaurantId, updatedRestaurantDTO);
             return NoContent();
         }
 
         [HttpGet]
-        [Route("/{restaurantId}")]
-        public async Task<ActionResult<Models.Restaurant>> GetRestaurant(int restaurantId)
+        [Route("/viewrestaurant/{restaurantId}")]
+        public async Task<ActionResult<RestaurantDTO>> GetRestaurant(int restaurantId)
         {
-            var restaurant = await _restaurantRepository.SearchRestaurantAsync(restaurantId);
+            var restaurant = await _restaurantService.SearchRestaurantAsync(restaurantId);
             if (restaurant == null)
             {
                 return NotFound();
@@ -57,10 +54,10 @@ namespace Restaurant.Controllers
         }
 
         [HttpGet]
-        [Route("/view")]
+        [Route("/viewallrestaurants")]
         public async Task<IActionResult> ViewAllRestaurants()
         {
-            var restaurants = await _restaurantRepository.GetAllRestaurantsAsync();
+            var restaurants = await _restaurantService.GetAllRestaurantsAsync();
             return Ok(restaurants);
         }
     }

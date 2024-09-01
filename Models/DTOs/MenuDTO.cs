@@ -5,6 +5,7 @@ namespace Restaurant.Models.DTOs
 {
     public class MenuDTO
     {
+        public int Id { get; set; }
         public string? NameOfDish { get; set; }
         public string? Drink { get; set; }
         public bool IsAvailable { get; set; }

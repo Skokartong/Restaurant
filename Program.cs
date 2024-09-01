@@ -1,6 +1,10 @@
 using Restaurant.Data;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
+using Restaurant.Services.IServices;
+using Restaurant.Services;
+using Restaurant.Data.Repos.IRepos;
+using Restaurant.Data.Repos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +18,16 @@ builder.Services.AddDbContext<RestaurantContext>(options =>
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IBookingService, BookingService>();
+builder.Services.AddScoped<IOrderMenuService, OrderMenuService>();
+builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+builder.Services.AddScoped<IRestaurantRepository, RestaurantRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IMenuRepository, MenuRepository>();
+builder.Services.AddScoped<ITableRepository, TableRepository>();
+builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

@@ -15,6 +15,8 @@ namespace Restaurant.Models
 
         // Navigation property for all orders linked to a certain table
         public ICollection<Order> Orders { get; set; }
+        // Navigation property for all reservations linked to a certain table
+        public virtual ICollection<Reservation> Reservations { get; set; }
 
         // Each table is linked to a specific restaurant
         [ForeignKey("Restaurant")]

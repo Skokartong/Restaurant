@@ -11,6 +11,7 @@ namespace Restaurant.Services.IServices
         Task<OrderDTO> SearchOrderAsync(int orderId);
         Task<List<OrderDTO>> SeeAllOrdersFromTableAsync(int tableId);
         Task<List<MenuDTO>> SeeMenuAsync(int restaurantId);
+        Task<MenuDTO> GetAvailableMenuItemAsync(int menuId);
         Task AddDishOrDrinkAsync(MenuDTO menuItem);
         Task DeleteDishOrDrinkAsync(int menuId);
         Task UpdateDishOrDrinkAsync(int menuId, MenuDTO menuItem);

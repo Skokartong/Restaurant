@@ -12,15 +12,15 @@ namespace Restaurant.Models
 
         [ForeignKey("Table")]
         public int FK_TableId { get; set; }
-        public Table Table { get; set; }
+        public virtual Table Table { get; set; }
 
         [ForeignKey("Menu")]
         public int FK_MenuId { get; set; }
-        public Menu Menu { get; set; }
+        public virtual Menu Menu { get; set; }
 
         [ForeignKey("Customer")]
         public int FK_CustomerId { get; set; }
-        public Customer Customer { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }
 

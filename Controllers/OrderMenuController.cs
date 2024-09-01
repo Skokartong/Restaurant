@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Data.Repos.IRepos;
+using Restaurant.Services.IServices;
 using Restaurant.Models;
+using Restaurant.Models.DTOs;
 
 namespace Restaurant.Controllers
 {
@@ -9,49 +11,47 @@ namespace Restaurant.Controllers
     [ApiController]
     public class OrderMenuController : ControllerBase
     {
-        private readonly IMenuRepository _menuRepository;
-        private readonly IOrderRepository _orderRepository;
+        private readonly IOrderMenuService _orderMenuService;
 
-        public OrderMenuController(IMenuRepository menuRepository, IOrderRepository orderRepository)
+        public OrderMenuController(IOrderMenuService orderMenuService)
         {
-            _menuRepository = menuRepository;
-            _orderRepository = orderRepository;
+            _orderMenuService = orderMenuService;
         }
 
         [HttpPost]
-        [Route("menu/add")]
-        public async Task<IActionResult> AddMenu(Menu menuItem)
+        [Route("/addmenuitem")]
+        public async Task<IActionResult> AddMenu([FromBody] MenuDTO menuDTO)
         {
-            await _menuRepository.AddDishOrDrinkAsync(menuItem);
-            return CreatedAtAction(nameof(GetMenuItem), new { id = menuItem.Id }, menuItem);
+            await _orderMenuService.AddDishOrDrinkAsync(menuDTO);
+            return CreatedAtAction(nameof(GetMenuItem), new { id = menuDTO.Id }, menuDTO);
         }
 
         [HttpDelete]
-        [Route("menu/delete/{menuId}")]
+        [Route("/deletedish/{menuId}")]
         public async Task<IActionResult> DeleteMenu(int menuId)
         {
-            await _menuRepository.DeleteDishOrDrinkAsync(menuId);
+            await _orderMenuService.DeleteDishOrDrinkAsync(menuId);
             return NoContent();
         }
 
         [HttpPut]
-        [Route("menu/update/{menuId}")]
-        public async Task<IActionResult> UpdateMenu(int menuId, Menu menuItem)
+        [Route("/updatemenuitem/{menuId}")]
+        public async Task<IActionResult> UpdateMenu(int menuId, [FromBody] MenuDTO menuDTO)
         {
-            if (menuId != menuItem.Id)
+            if (menuId != menuDTO.Id)
             {
                 return BadRequest();
             }
 
-            await _menuRepository.UpdateDishOrDrinkAsync(menuId, menuItem);
+            await _orderMenuService.UpdateDishOrDrinkAsync(menuId, menuDTO);
             return NoContent();
         }
 
         [HttpGet]
-        [Route("menu/{menuId}")]
-        public async Task<ActionResult<Menu>> GetMenuItem(int menuId)
+        [Route("/viewdish/{menuId}")]
+        public async Task<ActionResult<MenuDTO>> GetMenuItem(int menuId)
         {
-            var menuItem = await _menuRepository.GetAvailableMenuItemAsync(menuId);
+            var menuItem = await _orderMenuService.GetAvailableMenuItemAsync(menuId);
             if (menuItem == null)
             {
                 return NotFound();
@@ -60,47 +60,47 @@ namespace Restaurant.Controllers
         }
 
         [HttpGet]
-        [Route("menu/restaurant/{menuId}")]
-        public async Task<ActionResult<List<Menu>>> GetMenu(int menuId)
+        [Route("/viewmenu/{restaurantId}")]
+        public async Task<ActionResult<List<Menu>>> GetMenu(int restaurantId)
         {
-            var menu = await _menuRepository.SeeMenuAsync(menuId);
+            var menu = await _orderMenuService.SeeMenuAsync(restaurantId);
             return Ok(menu);
         }
 
         [HttpPost]
-        [Route("order/add")]
-        public async Task<IActionResult> AddOrder(Order order)
+        [Route("/addorder")]
+        public async Task<IActionResult> AddOrder([FromBody] OrderDTO orderDTO)
         {
-            await _orderRepository.AddOrderAsync(order);
-            return CreatedAtAction(nameof(GetOrder), new { id = order.Id }, order);
+            await _orderMenuService.AddOrderAsync(orderDTO);
+            return Ok();
         }
 
         [HttpDelete]
-        [Route("order/delete/{orderId}")]
+        [Route("/deleteorder/{orderId}")]
         public async Task<IActionResult> DeleteOrder(int orderId)
         {
-            await _orderRepository.DeleteOrderAsync(orderId);
-            return NoContent();
+            await _orderMenuService.DeleteOrderAsync(orderId);
+            return Ok();
         }
 
         [HttpPut]
-        [Route("order/update/{orderId}")]
-        public async Task<IActionResult> UpdateOrder(int orderId, Order order)
+        [Route("/updateorder/{orderId}")]
+        public async Task<IActionResult> UpdateOrder(int orderId,[FromBody] OrderDTO orderDTO)
         {
-            if (orderId != order.Id)
+            if (orderId != orderDTO.Id)
             {
                 return BadRequest();
             }
 
-            await _orderRepository.UpdateOrderAsync(orderId, order);
+            await _orderMenuService.UpdateOrderAsync(orderId, orderDTO);
             return NoContent();
         }
 
         [HttpGet]
-        [Route("order/get/{orderId}")]
-        public async Task<ActionResult<Order>> GetOrder(int orderId)
+        [Route("/getorder/{orderId}")]
+        public async Task<ActionResult<OrderDTO>> GetOrder(int orderId)
         {
-            var order = await _orderRepository.SearchOrderAsync(orderId);
+            var order = await _orderMenuService.SearchOrderAsync(orderId);
             if (order == null)
             {
                 return NotFound();
@@ -109,10 +109,10 @@ namespace Restaurant.Controllers
         }
 
         [HttpGet]
-        [Route("order/table/{tableId}")]
-        public async Task<ActionResult<List<Order>>> GetOrdersByTable(int tableId)
+        [Route("/vieworders/{tableId}")]
+        public async Task<ActionResult<List<OrderDTO>>> GetOrdersByTable(int tableId)
         {
-            var orders = await _orderRepository.SeeAllOrdersFromTableAsync(tableId);
+            var orders = await _orderMenuService.SeeAllOrdersFromTableAsync(tableId);
             return Ok(orders);
         }
     }

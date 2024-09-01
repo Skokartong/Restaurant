@@ -17,7 +17,7 @@ namespace Restaurant.Controllers
         }
 
         [HttpPost]
-        [Route("/book")]
+        [Route("/booktable")]
         public async Task<IActionResult> BookTable([FromBody] ReservationDTO reservationDTO)
         {
             try
@@ -38,7 +38,7 @@ namespace Restaurant.Controllers
         }
 
         [HttpDelete]
-        [Route("/delete/{reservationId}")]
+        [Route("/deletebooking/{reservationId}")]
         public async Task<IActionResult> DeleteReservation(int reservationId)
         {
             await _bookingService.DeleteReservationAsync(reservationId);
@@ -46,15 +46,15 @@ namespace Restaurant.Controllers
         }
 
         [HttpPut]
-        [Route("/update/{reservationId}")]
-        public async Task<IActionResult> UpdateReservation(int reservationId, [FromBody] ReservationDTO updatedReservation)
+        [Route("/updatebooking/{reservationId}")]
+        public async Task<IActionResult> UpdateReservation(int reservationId,[FromBody] ReservationDTO updatedReservationDTO)
         {
-            await _bookingService.UpdateReservationAsync(reservationId, updatedReservation);
+            await _bookingService.UpdateReservationAsync(reservationId, updatedReservationDTO);
             return NoContent(); 
         }
 
         [HttpPost]
-        [Route("table/add")]
+        [Route("/addtable")]
         public async Task<IActionResult> AddTable([FromBody] TableDTO tableDTO)
         {
             await _bookingService.AddTableAsync(tableDTO);
@@ -62,15 +62,15 @@ namespace Restaurant.Controllers
         }
 
         [HttpPut]
-        [Route("table/update/{tableId}")]
-        public async Task<IActionResult> UpdateTable(int tableId, [FromBody] TableDTO updatedTable)
+        [Route("/updatetable/{tableId}")]
+        public async Task<IActionResult> UpdateTable(int tableId,[FromBody] TableDTO updatedTableDTO)
         {
-            await _bookingService.UpdateTableAsync(tableId, updatedTable);
+            await _bookingService.UpdateTableAsync(tableId, updatedTableDTO);
             return NoContent(); 
         }
 
         [HttpDelete]
-        [Route("table/delete/{tableId}")]
+        [Route("/deletetable/{tableId}")]
         public async Task<IActionResult> DeleteTable(int tableId)
         {
             await _bookingService.DeleteTableAsync(tableId);

@@ -137,6 +137,25 @@ namespace Restaurant.Services
                 FK_MenuId = o.FK_MenuId
             }).ToList();
         }
+
+        public async Task<MenuDTO> GetAvailableMenuItemAsync(int menuId)
+        {
+            var menuItem = await _menuRepository.GetAvailableMenuItemAsync(menuId);
+
+            if (menuItem == null)
+            {
+                throw new InvalidCastException($"No dish with id:{menuId} found");
+            }
+
+            return new MenuDTO
+            {
+                NameOfDish = menuItem.NameOfDish,
+                Drink = menuItem.Drink,
+                Price = menuItem.Price,
+                IsAvailable = menuItem.IsAvailable,
+                FK_RestaurantId = menuItem.FK_RestaurantId
+            };
+        }
     }
 }
 

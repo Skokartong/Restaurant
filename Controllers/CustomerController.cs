@@ -18,7 +18,7 @@ namespace Restaurant.Controllers
         }
 
         [HttpPost]
-        [Route("/add")]
+        [Route("/addcustomer")]
         public async Task<ActionResult> AddCustomer([FromBody] CustomerDTO customerDTO)
         {
             await _customerService.AddCustomerAsync(customerDTO);
@@ -26,7 +26,7 @@ namespace Restaurant.Controllers
         }
 
         [HttpDelete]
-        [Route("/delete")]
+        [Route("/deletecustomer")]
         public async Task<IActionResult> DeleteCustomer(int customerId)
         {
             await _customerService.DeleteCustomerAsync(customerId);
@@ -48,7 +48,7 @@ namespace Restaurant.Controllers
         }
 
         [HttpGet]
-        [Route("/view")]
+        [Route("/viewcustomers")]
         public async Task<IActionResult> SeeAllCustomers(string restaurantName)
         {
             var customers = await _customerService.SeeAllCustomersAsync(restaurantName);
@@ -62,8 +62,8 @@ namespace Restaurant.Controllers
         }
 
         [HttpPut]
-        [Route("/update/{customerId}")]
-        public async Task<IActionResult> UpdateCustomer(int customerId, [FromBody] CustomerDTO customerDTO)
+        [Route("/updatecustomer/{customerId}")]
+        public async Task<IActionResult> UpdateCustomer(int customerId,[FromBody] CustomerDTO customerDTO)
         {
             var updatedCustomer = await _customerService.UpdateCustomerAsync(customerId, customerDTO);
 

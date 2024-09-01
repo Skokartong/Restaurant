@@ -12,8 +12,8 @@ namespace Restaurant.Models
         [Required]
         [MaxLength(50)]
         public string TypeOfRestaurant { get; set; }
-        public ICollection<Menu> Menus { get; set; }
-        public ICollection<Customer> Customers { get; set; }
-        public ICollection<Table> Tables { get; set; }
+        public virtual ICollection<Menu> Menus { get; set; }
+        public virtual ICollection<Customer> Customers { get; set; }
+        public virtual ICollection<Table> Tables { get; set; }
     }
 }
