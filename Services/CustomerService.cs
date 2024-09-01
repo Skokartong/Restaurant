@@ -44,7 +44,6 @@ namespace Restaurant.Services
                 Name = customer.Name,
                 Email = customer.Email,
                 Phone = customer.Phone,
-                FK_RestaurantId = customer.FK_RestaurantId
             };
         }
 
@@ -61,9 +60,7 @@ namespace Restaurant.Services
             {
                 Name = c.Name,
                 Email = c.Email,
-                Phone = c.Phone,
-                FK_RestaurantId = c.FK_RestaurantId
-
+                Phone = c.Phone
             }).ToList();
         }
 
@@ -83,8 +80,7 @@ namespace Restaurant.Services
             {
                 Name = updatedCustomer.Name,
                 Phone = updatedCustomer.Phone,
-                Email = updatedCustomer.Email,
-                FK_RestaurantId = updatedCustomer.FK_RestaurantId
+                Email = updatedCustomer.Email
             };
         }
     }

@@ -22,7 +22,7 @@ namespace Restaurant.Services
 
             if (availableTable == null)
             {
-                throw new InvalidOperationException($"Unfortunaly there are no tables available that time");
+                throw new InvalidOperationException("Unfortunately, there are no tables available at that time.");
             }
 
             var reservation = new Reservation
@@ -35,9 +35,6 @@ namespace Restaurant.Services
             };
 
             await _reservationRepository.AddReservationAsync(reservation);
-
-            availableTable.IsAvailable = false;
-            await _tableRepository.UpdateTableAsync(availableTable.Id, availableTable);
 
             return true;
         }
@@ -54,8 +51,8 @@ namespace Restaurant.Services
                 NumberOfGuests = updatedReservationDTO.NumberOfGuests,
                 BookingStart = updatedReservationDTO.BookingStart,
                 BookingEnd = updatedReservationDTO.BookingEnd,
-                FK_TableId = updatedReservationDTO.FK_TableId,
-                FK_CustomerId = updatedReservationDTO.FK_CustomerId
+                FK_CustomerId = updatedReservationDTO.FK_CustomerId,
+                FK_RestaurantId = updatedReservationDTO.FK_RestaurantId
             };
 
             await _reservationRepository.UpdateReservationAsync(reservationId, updatedReservation);

@@ -32,15 +32,15 @@ namespace Restaurant.Data.Repos
 
         public async Task<Table?> GetAvailableTableAsync(int restaurantId, DateTime startTime, DateTime endTime, int numberOfGuests)
         {
-            var availableTable = await _context.Reservations
-    .Where(r => r.Table.FK_RestaurantId == restaurantId && 
-                r.Table.AmountOfSeats >= numberOfGuests && 
-                !(r.BookingStart < endTime && r.BookingEnd > startTime)) 
-    .Select(r => r.Table) 
-    .FirstOrDefaultAsync(t => t.IsAvailable); 
+            var availableTable = await _context.Tables
+                .Where(t => t.FK_RestaurantId == restaurantId &&
+                            t.AmountOfSeats >= numberOfGuests &&
+                            t.Reservations.All(r => !(r.BookingStart < endTime && r.BookingEnd > startTime)))
+                .FirstOrDefaultAsync(t => t.IsAvailable);
 
             return availableTable;
         }
+
 
         public async Task UpdateTableAsync(int tableId, Table updatedTable)
         {

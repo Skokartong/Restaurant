@@ -39,7 +39,6 @@ namespace Restaurant.Data.Repos
                 customer.Name = updatedCustomer.Name;
                 customer.Phone = updatedCustomer.Phone;
                 customer.Email = updatedCustomer.Email;
-                customer.FK_RestaurantId = updatedCustomer.FK_RestaurantId;
 
                 _context.Customers.Update(customer);
                 await _context.SaveChangesAsync();

@@ -23,8 +23,8 @@ namespace Restaurant.Controllers
             try
             {
                 await _bookingService.BookTableAsync(
-                    reservationDTO.FK_TableId,
                     reservationDTO.FK_CustomerId,
+                    reservationDTO.FK_RestaurantId,
                     reservationDTO.BookingStart,
                     reservationDTO.BookingEnd,
                     reservationDTO.NumberOfGuests

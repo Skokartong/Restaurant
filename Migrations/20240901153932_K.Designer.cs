@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Restaurant.Data;
 
@@ -11,9 +12,11 @@ using Restaurant.Data;
 namespace Restaurant.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20240901153932_K")]
+    partial class K
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,29 +55,6 @@ namespace Restaurant.Migrations
                     b.HasIndex("FK_RestaurantId");
 
                     b.ToTable("Customers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "john@example.com",
-                            Name = "John Doe",
-                            Phone = 123456790
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "jane@example.com",
-                            Name = "Jane Smith",
-                            Phone = 98743210
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Email = "alice@example.com",
-                            Name = "Alice Johnson",
-                            Phone = 65654654
-                        });
                 });
 
             modelBuilder.Entity("Restaurant.Models.Menu", b =>
@@ -107,35 +87,6 @@ namespace Restaurant.Migrations
                     b.HasIndex("FK_RestaurantId");
 
                     b.ToTable("Menus");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Drink = "Wine",
-                            FK_RestaurantId = 1,
-                            IsAvailable = true,
-                            NameOfDish = "Spaghetti Carbonara",
-                            Price = 12.99
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Drink = "Sake",
-                            FK_RestaurantId = 2,
-                            IsAvailable = true,
-                            NameOfDish = "Sushi Combo",
-                            Price = 15.99
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Drink = "Beer",
-                            FK_RestaurantId = 3,
-                            IsAvailable = true,
-                            NameOfDish = "Grilled Steak",
-                            Price = 20.989999999999998
-                        });
                 });
 
             modelBuilder.Entity("Restaurant.Models.Order", b =>
@@ -204,28 +155,6 @@ namespace Restaurant.Migrations
                     b.HasIndex("FK_TableId");
 
                     b.ToTable("Reservations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BookingEnd = new DateTime(2024, 9, 1, 22, 21, 15, 40, DateTimeKind.Local).AddTicks(5236),
-                            BookingStart = new DateTime(2024, 9, 1, 20, 21, 15, 40, DateTimeKind.Local).AddTicks(5185),
-                            FK_CustomerId = 1,
-                            FK_RestaurantId = 1,
-                            FK_TableId = 1,
-                            NumberOfGuests = 2
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BookingEnd = new DateTime(2024, 9, 2, 21, 21, 15, 40, DateTimeKind.Local).AddTicks(5244),
-                            BookingStart = new DateTime(2024, 9, 2, 19, 21, 15, 40, DateTimeKind.Local).AddTicks(5239),
-                            FK_CustomerId = 2,
-                            FK_RestaurantId = 2,
-                            FK_TableId = 3,
-                            NumberOfGuests = 3
-                        });
                 });
 
             modelBuilder.Entity("Restaurant.Models.Restaurant", b =>
@@ -249,26 +178,6 @@ namespace Restaurant.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Restaurants");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            RestaurantName = "Italian Bistro",
-                            TypeOfRestaurant = "Italian"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            RestaurantName = "Sushi Palace",
-                            TypeOfRestaurant = "Japanese"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            RestaurantName = "Steak House",
-                            TypeOfRestaurant = "American"
-                        });
                 });
 
             modelBuilder.Entity("Restaurant.Models.Table", b =>
@@ -296,48 +205,6 @@ namespace Restaurant.Migrations
                     b.HasIndex("FK_RestaurantId");
 
                     b.ToTable("Tables");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AmountOfSeats = 4,
-                            FK_RestaurantId = 1,
-                            IsAvailable = false,
-                            TableNumber = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AmountOfSeats = 2,
-                            FK_RestaurantId = 1,
-                            IsAvailable = false,
-                            TableNumber = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AmountOfSeats = 6,
-                            FK_RestaurantId = 2,
-                            IsAvailable = false,
-                            TableNumber = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AmountOfSeats = 4,
-                            FK_RestaurantId = 3,
-                            IsAvailable = false,
-                            TableNumber = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            AmountOfSeats = 8,
-                            FK_RestaurantId = 3,
-                            IsAvailable = false,
-                            TableNumber = 5
-                        });
                 });
 
             modelBuilder.Entity("Restaurant.Models.Customer", b =>

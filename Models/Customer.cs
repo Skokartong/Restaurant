@@ -16,9 +16,7 @@ namespace Restaurant.Models
         [Required]
         [MaxLength(30)]
         public string Email { get; set; }
-
-        [ForeignKey("Restaurant")]
-        public int FK_RestaurantId { get; set; }
+        public int? FK_RestaurantId { get; set; }
         public virtual Restaurant Restaurant { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<Reservation> Reservations { get; set; }
