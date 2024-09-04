@@ -64,14 +64,14 @@ namespace Restaurant.Services
             }).ToList();
         }
 
-        public async Task<CustomerDTO> UpdateCustomerAsync(int customerId, CustomerDTO updatedCustomerDTO)
+        public async Task<CustomerDTO> UpdateCustomerAsync(int customerId, CustomerDTO customerDTO)
         {
             var updatedCustomer = new Customer
             {
                 Id = customerId,
-                Name = updatedCustomerDTO.Name,
-                Phone = updatedCustomerDTO.Phone,
-                Email = updatedCustomerDTO.Email,
+                Name = customerDTO.Name,
+                Phone = customerDTO.Phone,
+                Email = customerDTO.Email,
             };
 
             await _customerRepository.UpdateCustomerAsync(customerId, updatedCustomer);

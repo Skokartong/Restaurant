@@ -44,15 +44,15 @@ namespace Restaurant.Services
             await _reservationRepository.DeleteReservationAsync(reservationId);
         }
 
-        public async Task UpdateReservationAsync(int reservationId, ReservationDTO updatedReservationDTO)
+        public async Task UpdateReservationAsync(int reservationId, ReservationDTO reservationDTO)
         {
             var updatedReservation = new Reservation
             {
-                NumberOfGuests = updatedReservationDTO.NumberOfGuests,
-                BookingStart = updatedReservationDTO.BookingStart,
-                BookingEnd = updatedReservationDTO.BookingEnd,
-                FK_CustomerId = updatedReservationDTO.FK_CustomerId,
-                FK_RestaurantId = updatedReservationDTO.FK_RestaurantId
+                NumberOfGuests = reservationDTO.NumberOfGuests,
+                BookingStart = reservationDTO.BookingStart,
+                BookingEnd = reservationDTO.BookingEnd,
+                FK_CustomerId = reservationDTO.FK_CustomerId,
+                FK_RestaurantId = reservationDTO.FK_RestaurantId
             };
 
             await _reservationRepository.UpdateReservationAsync(reservationId, updatedReservation);
@@ -71,15 +71,15 @@ namespace Restaurant.Services
             await _tableRepository.AddTableAsync(table);
         }
 
-        public async Task UpdateTableAsync(int tableId, TableDTO updatedTableDTO)
+        public async Task UpdateTableAsync(int tableId, TableDTO tableDTO)
         {
             var table = new Table
             {
                 Id = tableId,
-                TableNumber = updatedTableDTO.TableNumber,
-                AmountOfSeats = updatedTableDTO.AmountOfSeats,
-                FK_RestaurantId = updatedTableDTO.FK_RestaurantId,
-                IsAvailable = updatedTableDTO.IsAvailable
+                TableNumber = tableDTO.TableNumber,
+                AmountOfSeats = tableDTO.AmountOfSeats,
+                FK_RestaurantId = tableDTO.FK_RestaurantId,
+                IsAvailable = tableDTO.IsAvailable
             };
 
             await _tableRepository.UpdateTableAsync(tableId, table);

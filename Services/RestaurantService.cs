@@ -28,13 +28,13 @@ namespace Restaurant.Services
             await _restaurantRepository.DeleteRestaurantAsync(restaurantId);
         }
 
-        public async Task UpdateRestaurantAsync(int restaurantId, RestaurantDTO updatedRestaurantDTO)
+        public async Task UpdateRestaurantAsync(int restaurantId, RestaurantDTO restaurantDTO)
         {
             var updatedRestaurant = new Models.Restaurant
             {
                 Id = restaurantId,
-                RestaurantName = updatedRestaurantDTO.RestaurantName,
-                TypeOfRestaurant = updatedRestaurantDTO.TypeOfRestaurant
+                RestaurantName = restaurantDTO.RestaurantName,
+                TypeOfRestaurant = restaurantDTO.TypeOfRestaurant
             };
 
             await _restaurantRepository.UpdateRestaurantAsync(restaurantId, updatedRestaurant);

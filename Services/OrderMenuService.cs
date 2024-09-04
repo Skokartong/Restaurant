@@ -30,16 +30,16 @@ namespace Restaurant.Services
             await _menuRepository.AddDishOrDrinkAsync(menu);
         }
 
-        public async Task UpdateDishOrDrinkAsync(int menuId, MenuDTO menuItemDTO)
+        public async Task UpdateDishOrDrinkAsync(int menuId, MenuDTO menuDTO)
         {
             var updateMenu = new Menu
             {
                 Id = menuId,
-                NameOfDish = menuItemDTO.NameOfDish,
-                Drink = menuItemDTO.Drink,
-                Price = menuItemDTO.Price,
-                IsAvailable = menuItemDTO.IsAvailable,
-                FK_RestaurantId = menuItemDTO.FK_RestaurantId
+                NameOfDish = menuDTO.NameOfDish,
+                Drink = menuDTO.Drink,
+                Price = menuDTO.Price,
+                IsAvailable = menuDTO.IsAvailable,
+                FK_RestaurantId = menuDTO.FK_RestaurantId
             };
 
             await _menuRepository.UpdateDishOrDrinkAsync(menuId, updateMenu);
@@ -89,15 +89,15 @@ namespace Restaurant.Services
             await _orderRepository.AddOrderAsync(order);
         }
 
-        public async Task UpdateOrderAsync(int orderId, OrderDTO updatedOrderDTO)
+        public async Task UpdateOrderAsync(int orderId, OrderDTO orderDTO)
         {
             var updatedOrder = new Order
             {
                 Id = orderId,
-                Amount = updatedOrderDTO.Amount,
-                FK_CustomerId = updatedOrderDTO.FK_CustomerId,
-                FK_MenuId = updatedOrderDTO.FK_MenuId,
-                FK_TableId = updatedOrderDTO.FK_TableId
+                Amount = orderDTO.Amount,
+                FK_CustomerId = orderDTO.FK_CustomerId,
+                FK_MenuId = orderDTO.FK_MenuId,
+                FK_TableId = orderDTO.FK_TableId
             };
 
             await _orderRepository.UpdateOrderAsync(orderId, updatedOrder);

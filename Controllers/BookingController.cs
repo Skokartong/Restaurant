@@ -47,9 +47,9 @@ namespace Restaurant.Controllers
 
         [HttpPut]
         [Route("/updatebooking/{reservationId}")]
-        public async Task<IActionResult> UpdateReservation(int reservationId,[FromBody] ReservationDTO updatedReservationDTO)
+        public async Task<IActionResult> UpdateReservation(int reservationId,[FromBody] ReservationDTO reservationDTO)
         {
-            await _bookingService.UpdateReservationAsync(reservationId, updatedReservationDTO);
+            await _bookingService.UpdateReservationAsync(reservationId, reservationDTO);
             return NoContent(); 
         }
 
@@ -63,9 +63,9 @@ namespace Restaurant.Controllers
 
         [HttpPut]
         [Route("/updatetable/{tableId}")]
-        public async Task<IActionResult> UpdateTable(int tableId,[FromBody] TableDTO updatedTableDTO)
+        public async Task<IActionResult> UpdateTable(int tableId,[FromBody] TableDTO tableDTO)
         {
-            await _bookingService.UpdateTableAsync(tableId, updatedTableDTO);
+            await _bookingService.UpdateTableAsync(tableId, tableDTO);
             return NoContent(); 
         }
 

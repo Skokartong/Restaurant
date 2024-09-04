@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Restaurant.Data;
 
@@ -11,9 +12,11 @@ using Restaurant.Data;
 namespace Restaurant.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20240904170257_string")]
+    partial class @string
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,8 +48,8 @@ namespace Restaurant.Migrations
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("Id");
 
@@ -210,8 +213,8 @@ namespace Restaurant.Migrations
                         new
                         {
                             Id = 1,
-                            BookingEnd = new DateTime(2024, 9, 4, 22, 41, 29, 623, DateTimeKind.Local).AddTicks(7153),
-                            BookingStart = new DateTime(2024, 9, 4, 20, 41, 29, 623, DateTimeKind.Local).AddTicks(7103),
+                            BookingEnd = new DateTime(2024, 9, 4, 22, 2, 56, 854, DateTimeKind.Local).AddTicks(8857),
+                            BookingStart = new DateTime(2024, 9, 4, 20, 2, 56, 854, DateTimeKind.Local).AddTicks(8800),
                             FK_CustomerId = 1,
                             FK_RestaurantId = 1,
                             FK_TableId = 1,
@@ -220,8 +223,8 @@ namespace Restaurant.Migrations
                         new
                         {
                             Id = 2,
-                            BookingEnd = new DateTime(2024, 9, 5, 21, 41, 29, 623, DateTimeKind.Local).AddTicks(7160),
-                            BookingStart = new DateTime(2024, 9, 5, 19, 41, 29, 623, DateTimeKind.Local).AddTicks(7156),
+                            BookingEnd = new DateTime(2024, 9, 5, 21, 2, 56, 854, DateTimeKind.Local).AddTicks(8863),
+                            BookingStart = new DateTime(2024, 9, 5, 19, 2, 56, 854, DateTimeKind.Local).AddTicks(8860),
                             FK_CustomerId = 2,
                             FK_RestaurantId = 2,
                             FK_TableId = 3,

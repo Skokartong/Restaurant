@@ -35,9 +35,9 @@ namespace Restaurant.Controllers
 
         [HttpPut]
         [Route("/updaterestaurant/{restaurantId}")]
-        public async Task<IActionResult> UpdateRestaurant(int restaurantId, [FromBody] RestaurantDTO updatedRestaurantDTO)
+        public async Task<IActionResult> UpdateRestaurant(int restaurantId, [FromBody] RestaurantDTO restaurantDTO)
         {
-            await _restaurantService.UpdateRestaurantAsync(restaurantId, updatedRestaurantDTO);
+            await _restaurantService.UpdateRestaurantAsync(restaurantId, restaurantDTO);
             return NoContent();
         }
 

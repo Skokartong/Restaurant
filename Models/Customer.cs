@@ -11,8 +11,8 @@ namespace Restaurant.Models
         [MaxLength(30)]
         public string Name { get; set; }
         [Required]
-        [MaxLength(10)]
-        public int Phone { get; set; }
+        [MaxLength(15)]
+        public string Phone { get; set; }
         [Required]
         [MaxLength(30)]
         public string Email { get; set; }

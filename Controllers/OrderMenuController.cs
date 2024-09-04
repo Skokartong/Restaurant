@@ -23,7 +23,7 @@ namespace Restaurant.Controllers
         public async Task<IActionResult> AddMenu([FromBody] MenuDTO menuDTO)
         {
             await _orderMenuService.AddDishOrDrinkAsync(menuDTO);
-            return CreatedAtAction(nameof(GetMenuItem), new { id = menuDTO.Id }, menuDTO);
+            return Ok(menuDTO);
         }
 
         [HttpDelete]
@@ -38,13 +38,8 @@ namespace Restaurant.Controllers
         [Route("/updatemenuitem/{menuId}")]
         public async Task<IActionResult> UpdateMenu(int menuId, [FromBody] MenuDTO menuDTO)
         {
-            if (menuId != menuDTO.Id)
-            {
-                return BadRequest();
-            }
-
             await _orderMenuService.UpdateDishOrDrinkAsync(menuId, menuDTO);
-            return NoContent();
+            return Ok(menuDTO);
         }
 
         [HttpGet]
