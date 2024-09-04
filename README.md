@@ -4,6 +4,7 @@ Overview
 This API provides functionalities for managing bookings, customers, menus, and restaurants. It allows users to create, update, retrieve, and delete records related to these entities within a restaurant management system.
 
 Endpoints:
+
 Booking Management
 
     POST /booktable
