@@ -15,6 +15,7 @@ namespace Restaurant.Data.Repos
 
         public async Task AddTableAsync(Table table)
         {
+            table.IsAvailable = true;
             await _context.Tables.AddAsync(table);
             await _context.SaveChangesAsync();
         }

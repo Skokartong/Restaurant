@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Restaurant.Models;
 using Restaurant.Models.DTOs;
 using Restaurant.Services.IServices;
 
@@ -18,17 +19,11 @@ namespace Restaurant.Controllers
 
         [HttpPost]
         [Route("/booktable")]
-        public async Task<IActionResult> BookTable([FromBody] ReservationDTO reservationDTO)
+        public async Task<IActionResult> BookTable(int restaurantId, int customerId, DateTime startTime, DateTime endTime, int numberOfGuests)
         {
             try
             {
-                await _bookingService.BookTableAsync(
-                    reservationDTO.FK_CustomerId,
-                    reservationDTO.FK_RestaurantId,
-                    reservationDTO.BookingStart,
-                    reservationDTO.BookingEnd,
-                    reservationDTO.NumberOfGuests
-                );
+                await _bookingService.BookTableAsync(restaurantId, customerId, startTime, endTime, numberOfGuests);
                 return Ok(new { message = "Table booked successfully" });
             }
             catch (InvalidOperationException ex)

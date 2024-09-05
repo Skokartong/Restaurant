@@ -29,12 +29,16 @@ namespace Restaurant.Services
             {
                 FK_CustomerId = customerId,
                 FK_TableId = availableTable.Id,
+                FK_RestaurantId = restaurantId,
                 NumberOfGuests = numberOfGuests,
                 BookingStart = startTime,
                 BookingEnd = endTime
             };
 
             await _reservationRepository.AddReservationAsync(reservation);
+
+            availableTable.IsAvailable = false;
+            await _tableRepository.UpdateTableAsync(availableTable.Id, availableTable);
 
             return true;
         }
