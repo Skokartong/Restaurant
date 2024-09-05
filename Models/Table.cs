@@ -11,8 +11,6 @@ namespace Restaurant.Models
         public int TableNumber { get; set; }
         [Required]
         public int AmountOfSeats { get; set; }
-        public bool IsAvailable { get; set; }
-
         public ICollection<Order> Orders { get; set; }
         public virtual ICollection<Reservation> Reservations { get; set; }
 

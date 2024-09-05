@@ -15,7 +15,6 @@ namespace Restaurant.Data.Repos
 
         public async Task AddTableAsync(Table table)
         {
-            table.IsAvailable = true;
             await _context.Tables.AddAsync(table);
             await _context.SaveChangesAsync();
         }
@@ -34,10 +33,9 @@ namespace Restaurant.Data.Repos
         public async Task<Table?> GetAvailableTableAsync(int restaurantId, DateTime startTime, DateTime endTime, int numberOfGuests)
         {
             var availableTable = await _context.Tables
-                .Where(t => t.FK_RestaurantId == restaurantId &&
+                .FirstAsync(t => t.FK_RestaurantId == restaurantId &&
                             t.AmountOfSeats >= numberOfGuests &&
-                            t.Reservations.All(r => !(r.BookingStart < endTime && r.BookingEnd > startTime)))
-                .FirstOrDefaultAsync(t => t.IsAvailable);
+                            t.Reservations.All(r => !(r.BookingStart < endTime && r.BookingEnd > startTime)));
 
             return availableTable;
         }
@@ -52,7 +50,6 @@ namespace Restaurant.Data.Repos
                 table.FK_RestaurantId = updatedTable.FK_RestaurantId;
                 table.AmountOfSeats = updatedTable.AmountOfSeats;
                 table.TableNumber = updatedTable.TableNumber;
-                table.IsAvailable = updatedTable.IsAvailable;
 
                 _context.Tables.Update(table);
                 await _context.SaveChangesAsync();

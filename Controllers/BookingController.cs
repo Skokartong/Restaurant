@@ -21,7 +21,7 @@ namespace Restaurant.Controllers
         [Route("/allbookings")]
         public async Task<IActionResult> ViewBookings()
         {
-            var bookings = await _bookingService.ViewAllReservations();
+            var bookings = await _bookingService.ViewAllReservationsAsync();
             return Ok(bookings);
         }
 

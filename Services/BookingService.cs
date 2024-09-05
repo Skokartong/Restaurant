@@ -1,4 +1,7 @@
-﻿using Restaurant.Data.Repos.IRepos;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Restaurant.Data.Repos;
+using Restaurant.Data.Repos.IRepos;
 using Restaurant.Migrations;
 using Restaurant.Models;
 using Restaurant.Models.DTOs;
@@ -17,47 +20,24 @@ namespace Restaurant.Services
             _tableRepository = tableRepository;
         }
 
-        public async Task<bool> BookTableAsync(int restaurantId, int customerId, DateTime startTime, DateTime endTime, int numberOfGuests)
+        public async Task BookTableAsync(int restaurantId, int customerId, DateTime startTime, DateTime endTime, int numberOfGuests)
         {
-            var availableTable = await _tableRepository.GetAvailableTableAsync(restaurantId, startTime, endTime, numberOfGuests);
-
-            if (availableTable == null)
-            {
-                throw new InvalidOperationException("Unfortunately, there are no tables available at that time.");
-            }
-
+            var availableTable = await _tableRepository.GetAvailableTableAsync(restaurantId, startTime, endTime, numberOfGuests) ?? throw new InvalidOperationException();
+            
             var reservation = new Models.Reservation
             {
-                FK_CustomerId = customerId,
-                FK_TableId = availableTable.Id,
-                FK_RestaurantId = restaurantId,
                 NumberOfGuests = numberOfGuests,
                 BookingStart = startTime,
-                BookingEnd = endTime
+                BookingEnd = endTime,
+                FK_CustomerId = customerId,
+                FK_RestaurantId = restaurantId,
+                FK_TableId = availableTable.Id
             };
 
             await _reservationRepository.AddReservationAsync(reservation);
-
-            // Background task that sets table as available when end of booking
-                availableTable.IsAvailable = false;
-                await _tableRepository.UpdateTableAsync(availableTable.Id, availableTable);
-
-            _ = Task.Run(async () =>
-            {
-                var delay = (endTime - DateTime.Now).TotalMilliseconds;
-                if (delay > 0)
-                {
-                    await Task.Delay((int)delay);
-                }
-
-                availableTable.IsAvailable = true;
-                await _tableRepository.UpdateTableAsync(availableTable.Id, availableTable);
-            });
-
-            return true;
         }
 
-        public async Task DeleteReservationAsync(int reservationId)
+    public async Task DeleteReservationAsync(int reservationId)
         {
             await _reservationRepository.DeleteReservationAsync(reservationId);
         }
@@ -81,12 +61,11 @@ namespace Restaurant.Services
 
         public async Task AddTableAsync(TableDTO tableDTO)
         {
-            var table = new Table
+            var table = new Models.Table
             {
                 TableNumber = tableDTO.TableNumber,
                 AmountOfSeats = tableDTO.AmountOfSeats,
                 FK_RestaurantId = tableDTO.FK_RestaurantId,
-                IsAvailable = tableDTO.IsAvailable
             };
 
             await _tableRepository.AddTableAsync(table);
@@ -94,13 +73,12 @@ namespace Restaurant.Services
 
         public async Task UpdateTableAsync(int tableId, TableDTO tableDTO)
         {
-            var table = new Table
+            var table = new Models.Table
             {
                 Id = tableId,
                 TableNumber = tableDTO.TableNumber,
                 AmountOfSeats = tableDTO.AmountOfSeats,
                 FK_RestaurantId = tableDTO.FK_RestaurantId,
-                IsAvailable = tableDTO.IsAvailable
             };
 
             await _tableRepository.UpdateTableAsync(tableId, table);
@@ -111,7 +89,7 @@ namespace Restaurant.Services
             await _tableRepository.DeleteTableAsync(tableId);
         }
 
-        public async Task<IEnumerable<ReservationDTO>> ViewAllReservations()
+        public async Task<IEnumerable<ReservationDTO>> ViewAllReservationsAsync()
         {
             var reservations = await _reservationRepository.ViewAllReservationsAsync();
 

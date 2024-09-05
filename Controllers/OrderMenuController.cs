@@ -46,7 +46,7 @@ namespace Restaurant.Controllers
         [Route("/viewdish/{menuId}")]
         public async Task<ActionResult<MenuDTO>> GetMenuItem(int menuId)
         {
-            var menuItem = await _orderMenuService.GetAvailableMenuItemAsync(menuId);
+            var menuItem = await _orderMenuService.SearchMenuItemAsync(menuId);
             if (menuItem == null)
             {
                 return NotFound();
@@ -64,9 +64,9 @@ namespace Restaurant.Controllers
 
         [HttpPost]
         [Route("/addorder")]
-        public async Task<IActionResult> AddOrder([FromBody] OrderDTO orderDTO)
+        public async Task<IActionResult> AddOrder(int menuId, [FromBody] OrderDTO orderDTO)
         {
-            await _orderMenuService.AddOrderAsync(orderDTO);
+            await _orderMenuService.AddOrderAsync(menuId, orderDTO);
             return Ok();
         }
 

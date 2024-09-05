@@ -54,9 +54,9 @@ namespace Restaurant.Services
         {
             var menuList = await _menuRepository.SeeMenuAsync(restaurantId);
 
-            if(menuList==null)
+            if (menuList == null || !menuList.Any())
             {
-                throw new InvalidOperationException($"There is no menu available at restaurant with id: {restaurantId} at the moment");
+                throw new InvalidOperationException($"There is no menu available at restaurant with id: {restaurantId} at the moment.");
             }
 
             return menuList.Select(m => new MenuDTO
