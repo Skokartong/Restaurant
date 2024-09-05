@@ -30,33 +30,21 @@ namespace Restaurant.Data.Repos
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateCustomerAsync(int customerId, Customer updatedCustomer)
+        public async Task<Customer?> SearchCustomerAsync(int customerId)
         {
-            var customer = await _context.Customers.FindAsync(customerId);
-
-            if(customer!=null)
-            {
-                customer.Name = updatedCustomer.Name;
-                customer.Phone = updatedCustomer.Phone;
-                customer.Email = updatedCustomer.Email;
-
-                _context.Customers.Update(customer);
-                await _context.SaveChangesAsync();
-            }
+            return await _context.Customers.FindAsync(customerId);
         }
 
-        public async Task<IEnumerable<Customer>> SeeAllCustomersAsync (string restaurantName)
+        public async Task UpdateCustomerAsync(Customer updatedCustomer)
+        {
+                _context.Customers.Update(updatedCustomer);
+                await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Customer>> SeeAllCustomersAsync ()
         {
             return await _context.Customers
-                .Include(c => c.Restaurant)
-                .Where(c => c.Restaurant.RestaurantName == restaurantName)
                 .ToListAsync();
-        }
-
-        public async Task<Customer> SearchCustomerAsync (int customerId)
-        {
-            var customer = await _context.Customers.FindAsync(customerId);
-            return customer;
         }
     }
 }

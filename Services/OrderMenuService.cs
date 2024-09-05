@@ -56,7 +56,7 @@ namespace Restaurant.Services
 
             if(menuList==null)
             {
-                throw new InvalidOperationException("There is no menu available at the selected restaurant at the moment");
+                throw new InvalidOperationException($"There is no menu available at restaurant with id: {restaurantId} at the moment");
             }
 
             return menuList.Select(m => new MenuDTO
@@ -69,24 +69,27 @@ namespace Restaurant.Services
             }).ToList();
         }
 
-        public async Task AddOrderAsync(OrderDTO orderDTO)
+        public async Task AddOrderAsync(int menuId, OrderDTO orderDTO)
         {
-            var menuItem = await _menuRepository.GetAvailableMenuItemAsync(orderDTO.FK_MenuId);
+            var isAvailable = await _menuRepository.GetAvailableMenuItemAsync(menuId);
 
-            if (menuItem == null)
+            if (isAvailable)
             {
-                throw new InvalidOperationException("The selected menu item is not available.");
+                var order = new Order
+                {
+                    Amount = orderDTO.Amount,
+                    FK_CustomerId = orderDTO.FK_CustomerId,
+                    FK_MenuId = orderDTO.FK_MenuId,
+                    FK_TableId = orderDTO.FK_TableId
+                };
+
+                await _orderRepository.AddOrderAsync(order);
             }
 
-            var order = new Order
+            else
             {
-                Amount = orderDTO.Amount,
-                FK_CustomerId = orderDTO.FK_CustomerId,
-                FK_MenuId = orderDTO.FK_MenuId,
-                FK_TableId = orderDTO.FK_TableId
-            };
-
-            await _orderRepository.AddOrderAsync(order);
+                throw new InvalidOperationException($"Sadly menu item {menuId} is not available :(");
+            }
         }
 
         public async Task UpdateOrderAsync(int orderId, OrderDTO orderDTO)
@@ -130,6 +133,11 @@ namespace Restaurant.Services
         {
             var orders = await _orderRepository.SeeAllOrdersFromTableAsync(tableId);
 
+            if(orders==null)
+            {
+                throw new InvalidCastException($"No orders from table with id: {tableId} found");
+            }
+
             return orders.Select(o => new OrderDTO
             {
                 Amount = o.Amount,
@@ -138,9 +146,9 @@ namespace Restaurant.Services
             }).ToList();
         }
 
-        public async Task<MenuDTO> GetAvailableMenuItemAsync(int menuId)
+        public async Task<MenuDTO> SearchMenuItemAsync(int menuId)
         {
-            var menuItem = await _menuRepository.GetAvailableMenuItemAsync(menuId);
+            var menuItem = await _menuRepository.SearchMenuItemAsync(menuId);
 
             if (menuItem == null)
             {

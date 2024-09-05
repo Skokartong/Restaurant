@@ -1,4 +1,5 @@
 ﻿using Restaurant.Data.Repos.IRepos;
+using Restaurant.Migrations;
 using Restaurant.Models;
 using Restaurant.Models.DTOs;
 using Restaurant.Services.IServices;
@@ -25,7 +26,7 @@ namespace Restaurant.Services
                 throw new InvalidOperationException("Unfortunately, there are no tables available at that time.");
             }
 
-            var reservation = new Reservation
+            var reservation = new Models.Reservation
             {
                 FK_CustomerId = customerId,
                 FK_TableId = availableTable.Id,
@@ -63,16 +64,19 @@ namespace Restaurant.Services
 
         public async Task UpdateReservationAsync(int reservationId, ReservationDTO reservationDTO)
         {
-            var updatedReservation = new Reservation
-            {
-                NumberOfGuests = reservationDTO.NumberOfGuests,
-                BookingStart = reservationDTO.BookingStart,
-                BookingEnd = reservationDTO.BookingEnd,
-                FK_CustomerId = reservationDTO.FK_CustomerId,
-                FK_RestaurantId = reservationDTO.FK_RestaurantId
-            };
+            var reservation = await _reservationRepository.GetReservationByIdAsync(reservationId);
 
-            await _reservationRepository.UpdateReservationAsync(reservationId, updatedReservation);
+            if (reservation != null)
+            {
+                reservation.NumberOfGuests = reservationDTO.NumberOfGuests;
+                reservation.BookingStart = reservationDTO.BookingStart;
+                reservation.BookingEnd = reservationDTO.BookingEnd;
+                reservation.FK_CustomerId = reservationDTO.FK_CustomerId;
+                reservation.FK_RestaurantId = reservationDTO.FK_RestaurantId;
+                reservation.FK_TableId = reservationDTO.FK_TableId;
+
+                await _reservationRepository.UpdateReservationAsync(reservation);
+            }
         }
 
         public async Task AddTableAsync(TableDTO tableDTO)
@@ -109,7 +113,16 @@ namespace Restaurant.Services
 
         public async Task<IEnumerable<ReservationDTO>> ViewAllReservations()
         {
+            var reservations = await _reservationRepository.ViewAllReservationsAsync();
 
+            return reservations.Select(r => new ReservationDTO
+            {
+                FK_CustomerId=r.FK_CustomerId,
+                FK_RestaurantId=r.FK_RestaurantId,
+                BookingStart=r.BookingStart,
+                BookingEnd=r.BookingEnd,
+                NumberOfGuests=r.NumberOfGuests
+            }).ToList();
         }
     }
 }

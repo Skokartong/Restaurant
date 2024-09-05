@@ -13,10 +13,9 @@ namespace Restaurant.Data.Repos
             _context = context;
         }
 
-        public async Task<Menu?> GetAvailableMenuItemAsync(int menuId)
+        public async Task<Menu?> SearchMenuItemAsync(int menuId)
         {
-            return await _context.Menus
-                                 .FirstOrDefaultAsync(m => m.Id == menuId && m.IsAvailable);
+            return await _context.Menus.FindAsync(menuId);
         }
 
         public async Task AddDishOrDrinkAsync(Menu menuItem)
@@ -39,10 +38,7 @@ namespace Restaurant.Data.Repos
 
         public async Task<IEnumerable<Menu>> SeeMenuAsync(int restaurantId)
         {
-            var viewMenu = await _context.Menus
-                                 .Where(m => m.FK_RestaurantId == restaurantId)
-                                 .ToListAsync();
-            return viewMenu;
+            return await _context.Menus.Where(m => m.FK_RestaurantId == restaurantId).ToListAsync();
         }
 
         public async Task UpdateDishOrDrinkAsync(int menuId, Menu updateMenu)
@@ -60,6 +56,16 @@ namespace Restaurant.Data.Repos
                 _context.Menus.Update(menuItem);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<bool> GetAvailableMenuItemAsync(int menuId)
+        {
+            var menuItem = await _context.Menus
+                .Where(m => m.Id == menuId)
+                .Select(m => m.IsAvailable)
+                .FirstOrDefaultAsync();
+
+            return menuItem;
         }
     }
 }

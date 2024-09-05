@@ -49,9 +49,9 @@ namespace Restaurant.Controllers
 
         [HttpGet]
         [Route("/viewcustomers")]
-        public async Task<IActionResult> SeeAllCustomers(string restaurantName)
+        public async Task<IActionResult> SeeAllCustomers()
         {
-            var customers = await _customerService.SeeAllCustomersAsync(restaurantName);
+            var customers = await _customerService.SeeAllCustomersAsync();
 
             if (customers == null || !customers.Any())
             {

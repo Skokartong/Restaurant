@@ -36,6 +36,11 @@ namespace Restaurant.Data.Repos
                 .Include(o => o.Customer)
                 .FirstOrDefaultAsync(o => o.Id == orderId);
 
+            if(order==null)
+            {
+                throw new InvalidOperationException($"No order with id: {orderId} found"); 
+            }
+
             return order;
         }
 

@@ -17,6 +17,14 @@ namespace Restaurant.Controllers
             _bookingService = bookingService;
         }
 
+        [HttpGet]
+        [Route("/allbookings")]
+        public async Task<IActionResult> ViewBookings()
+        {
+            var bookings = await _bookingService.ViewAllReservations();
+            return Ok(bookings);
+        }
+
         [HttpPost]
         [Route("/booktable")]
         public async Task<IActionResult> BookTable(int restaurantId, int customerId, DateTime startTime, DateTime endTime, int numberOfGuests)

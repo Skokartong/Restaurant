@@ -6,8 +6,8 @@ namespace Restaurant.Data.Repos.IRepos
     {
         Task AddCustomerAsync(Customer customer);
         Task DeleteCustomerAsync(int customerId);
-        Task UpdateCustomerAsync(int customerId, Customer updatedCustomer);
-        Task<IEnumerable<Customer>> SeeAllCustomersAsync(string restaurantName);
-        Task<Customer> SearchCustomerAsync(int customerId);
+        Task UpdateCustomerAsync(Customer updatedCustomer);
+        Task<IEnumerable<Customer>> SeeAllCustomersAsync();
+        Task<Customer?> SearchCustomerAsync(int customerId);
     }
 }

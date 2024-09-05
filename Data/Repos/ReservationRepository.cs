@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Restaurant.Data.Repos.IRepos;
 using Restaurant.Models;
+using Restaurant.Models.DTOs;
 
 namespace Restaurant.Data.Repos
 {
@@ -30,22 +31,15 @@ namespace Restaurant.Data.Repos
                 await _context.SaveChangesAsync();
             }
         }
-
-        public async Task UpdateReservationAsync(int reservationId, Reservation updatedReservation)
+        public async Task<Reservation> GetReservationByIdAsync(int reservationId)
         {
-            var reservation = await _context.Reservations.FindAsync(reservationId);
+            return await _context.Reservations.FindAsync(reservationId);
+        }
 
-            if (reservation!=null)
-            {
-                reservation.FK_CustomerId = updatedReservation.FK_CustomerId;
-                reservation.NumberOfGuests = updatedReservation.NumberOfGuests;
-                reservation.BookingStart = updatedReservation.BookingStart;
-                reservation.BookingEnd = updatedReservation.BookingEnd;
-                reservation.FK_TableId = updatedReservation.FK_TableId;
-
-                _context.Reservations.Update(reservation);
-                await _context.SaveChangesAsync();
-            }
+        public async Task UpdateReservationAsync(Reservation reservation)
+        {
+            _context.Reservations.Update(reservation);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Reservation>> ViewAllReservationsAsync()

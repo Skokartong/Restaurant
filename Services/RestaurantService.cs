@@ -44,6 +44,13 @@ namespace Restaurant.Services
         {
             var restaurantsList = await _restaurantRepository.GetAllRestaurantsAsync();
 
+            var restaurantDTO = restaurantsList.Select(r => new RestaurantDTO
+            {
+                RestaurantName = r.RestaurantName,
+                TypeOfRestaurant = r.TypeOfRestaurant
+            });
+
+            return restaurantDTO;
         }
 
         public async Task<RestaurantDTO> SearchRestaurantAsync(int restaurantId)

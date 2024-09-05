@@ -8,6 +8,7 @@ namespace Restaurant.Data.Repos.IRepos
         Task AddDishOrDrinkAsync(Menu menuItem);
         Task DeleteDishOrDrinkAsync(int menuId);
         Task UpdateDishOrDrinkAsync(int menuId, Menu menuItem);
-        Task<Menu?> GetAvailableMenuItemAsync(int menuId);
+        Task<Menu?> SearchMenuItemAsync(int menuId);
+        Task<bool> GetAvailableMenuItemAsync(int menuId);
     }
 }

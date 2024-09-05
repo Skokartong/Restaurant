@@ -47,13 +47,13 @@ namespace Restaurant.Services
             };
         }
 
-        public async Task<IEnumerable<CustomerDTO>> SeeAllCustomersAsync(string restaurantName)
+        public async Task<IEnumerable<CustomerDTO>> SeeAllCustomersAsync()
         {
-            var customersList = await _customerRepository.SeeAllCustomersAsync(restaurantName);
+            var customersList = await _customerRepository.SeeAllCustomersAsync();
 
             if (customersList==null)
             {
-                throw new InvalidOperationException($"There is no customers at {restaurantName}");
+                throw new InvalidOperationException($"There is no customers");
             }
 
             return customersList.Select(c => new CustomerDTO
@@ -66,6 +66,8 @@ namespace Restaurant.Services
 
         public async Task<CustomerDTO> UpdateCustomerAsync(int customerId, CustomerDTO customerDTO)
         {
+            await _customerRepository.SearchCustomerAsync(customerId);
+
             var updatedCustomer = new Customer
             {
                 Id = customerId,
@@ -74,7 +76,7 @@ namespace Restaurant.Services
                 Email = customerDTO.Email,
             };
 
-            await _customerRepository.UpdateCustomerAsync(customerId, updatedCustomer);
+            await _customerRepository.UpdateCustomerAsync(updatedCustomer);
 
             return new CustomerDTO
             {

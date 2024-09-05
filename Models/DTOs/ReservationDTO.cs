@@ -10,5 +10,6 @@ namespace Restaurant.Models.DTOs
         public DateTime BookingEnd { get; set; }
         public int FK_CustomerId { get; set; }
         public int FK_RestaurantId { get; set; }
+        public int FK_TableId { get; set; }
     }
 }
