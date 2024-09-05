@@ -22,19 +22,22 @@ namespace Restaurant.Services
 
         public async Task BookTableAsync(int restaurantId, int customerId, DateTime startTime, DateTime endTime, int numberOfGuests)
         {
-            var availableTable = await _tableRepository.GetAvailableTableAsync(restaurantId, startTime, endTime, numberOfGuests) ?? throw new InvalidOperationException();
+            var availableTable = await _tableRepository.GetAvailableTableAsync(restaurantId, startTime, endTime, numberOfGuests);
             
-            var reservation = new Models.Reservation
+            if (availableTable != null)
             {
-                NumberOfGuests = numberOfGuests,
-                BookingStart = startTime,
-                BookingEnd = endTime,
-                FK_CustomerId = customerId,
-                FK_RestaurantId = restaurantId,
-                FK_TableId = availableTable.Id
-            };
+                var reservation = new Models.Reservation
+                {
+                    NumberOfGuests = numberOfGuests,
+                    BookingStart = startTime,
+                    BookingEnd = endTime,
+                    FK_CustomerId = customerId,
+                    FK_RestaurantId = restaurantId,
+                    FK_TableId = availableTable.Id
+                };
 
-            await _reservationRepository.AddReservationAsync(reservation);
+                await _reservationRepository.AddReservationAsync(reservation);
+            }
         }
 
     public async Task DeleteReservationAsync(int reservationId)
