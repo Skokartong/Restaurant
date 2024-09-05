@@ -37,7 +37,7 @@ namespace Restaurant.Data.Repos
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Menu>> SeeMenuAsync(int restaurantId)
+        public async Task<IEnumerable<Menu>> SeeMenuAsync(int restaurantId)
         {
             var viewMenu = await _context.Menus
                                  .Where(m => m.FK_RestaurantId == restaurantId)

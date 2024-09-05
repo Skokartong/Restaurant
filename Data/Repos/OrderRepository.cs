@@ -39,7 +39,7 @@ namespace Restaurant.Data.Repos
             return order;
         }
 
-        public async Task<List<Order>> SeeAllOrdersFromTableAsync(int tableId)
+        public async Task<IEnumerable<Order>> SeeAllOrdersFromTableAsync(int tableId)
         {
             var orders = await _context.Orders
                            .Where(o => o.FK_TableId == tableId)
