@@ -37,8 +37,21 @@ namespace Restaurant.Services
 
             await _reservationRepository.AddReservationAsync(reservation);
 
-            availableTable.IsAvailable = false;
-            await _tableRepository.UpdateTableAsync(availableTable.Id, availableTable);
+            // Background task that sets table as available when end of booking
+                availableTable.IsAvailable = false;
+                await _tableRepository.UpdateTableAsync(availableTable.Id, availableTable);
+
+            _ = Task.Run(async () =>
+            {
+                var delay = (endTime - DateTime.Now).TotalMilliseconds;
+                if (delay > 0)
+                {
+                    await Task.Delay((int)delay);
+                }
+
+                availableTable.IsAvailable = true;
+                await _tableRepository.UpdateTableAsync(availableTable.Id, availableTable);
+            });
 
             return true;
         }
@@ -92,6 +105,11 @@ namespace Restaurant.Services
         public async Task DeleteTableAsync(int tableId)
         {
             await _tableRepository.DeleteTableAsync(tableId);
+        }
+
+        public async Task<IEnumerable<ReservationDTO>> ViewAllReservations()
+        {
+
         }
     }
 }

@@ -40,14 +40,21 @@ namespace Restaurant.Services
             await _restaurantRepository.UpdateRestaurantAsync(restaurantId, updatedRestaurant);
         }
 
-        public async Task<IEnumerable<Models.Restaurant>> GetAllRestaurantsAsync()
+        public async Task<IEnumerable<RestaurantDTO>> GetAllRestaurantsAsync()
         {
-            return await _restaurantRepository.GetAllRestaurantsAsync();
+            var restaurantsList = await _restaurantRepository.GetAllRestaurantsAsync();
+
         }
 
-        public async Task<Models.Restaurant> SearchRestaurantAsync(int restaurantId)
+        public async Task<RestaurantDTO> SearchRestaurantAsync(int restaurantId)
         {
-            return await _restaurantRepository.SearchRestaurantAsync(restaurantId);
+            var restaurant = await _restaurantRepository.SearchRestaurantAsync(restaurantId);
+
+            return new RestaurantDTO
+            {
+                RestaurantName = restaurant.RestaurantName,
+                TypeOfRestaurant = restaurant.TypeOfRestaurant
+            };
         }
     }
 }

@@ -8,6 +8,6 @@ namespace Restaurant.Data.Repos.IRepos
         Task UpdateOrderAsync(int orderId, Order updatedOrder);
         Task DeleteOrderAsync(int orderId);
         Task<Order> SearchOrderAsync(int orderId);
-        Task<List<Order>> SeeAllOrdersFromTableAsync(int tableId);
+        Task<IEnumerable<Order>> SeeAllOrdersFromTableAsync(int tableId);
     }
 }

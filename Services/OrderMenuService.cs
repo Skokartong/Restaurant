@@ -50,7 +50,7 @@ namespace Restaurant.Services
             await _menuRepository.DeleteDishOrDrinkAsync(menuId);
         }
 
-        public async Task<List<MenuDTO>> SeeMenuAsync(int restaurantId)
+        public async Task<IEnumerable<MenuDTO>> SeeMenuAsync(int restaurantId)
         {
             var menuList = await _menuRepository.SeeMenuAsync(restaurantId);
 
@@ -126,7 +126,7 @@ namespace Restaurant.Services
             };
         }
 
-        public async Task<List<OrderDTO>> SeeAllOrdersFromTableAsync(int tableId)
+        public async Task<IEnumerable<OrderDTO>> SeeAllOrdersFromTableAsync(int tableId)
         {
             var orders = await _orderRepository.SeeAllOrdersFromTableAsync(tableId);
 

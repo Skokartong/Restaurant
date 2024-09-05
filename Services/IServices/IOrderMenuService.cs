@@ -9,8 +9,8 @@ namespace Restaurant.Services.IServices
         Task UpdateOrderAsync(int orderId, OrderDTO orderDTO);
         Task DeleteOrderAsync(int orderId);
         Task<OrderDTO> SearchOrderAsync(int orderId);
-        Task<List<OrderDTO>> SeeAllOrdersFromTableAsync(int tableId);
-        Task<List<MenuDTO>> SeeMenuAsync(int restaurantId);
+        Task<IEnumerable<OrderDTO>> SeeAllOrdersFromTableAsync(int tableId);
+        Task<IEnumerable<MenuDTO>> SeeMenuAsync(int restaurantId);
         Task<MenuDTO> GetAvailableMenuItemAsync(int menuId);
         Task AddDishOrDrinkAsync(MenuDTO menuItem);
         Task DeleteDishOrDrinkAsync(int menuId);

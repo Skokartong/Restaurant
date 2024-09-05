@@ -1,4 +1,6 @@
-﻿using Restaurant.Data.Repos.IRepos;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
+using Restaurant.Data.Repos.IRepos;
 using Restaurant.Models;
 
 namespace Restaurant.Data.Repos
@@ -44,6 +46,12 @@ namespace Restaurant.Data.Repos
                 _context.Reservations.Update(reservation);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<List<Reservation>> ViewAllReservationsAsync()
+        {
+            var reservationList = await _context.Reservations.ToListAsync();
+            return reservationList;
         }
     }
 }
