@@ -40,9 +40,9 @@ namespace Restaurant.Controllers
                 await _bookingService.BookTableAsync(restaurantId, customerId, startTime, endTime, numberOfGuests);
                 return Created("", new {message = "Table booked successfully" });
             }
-            catch 
+            catch (Exception ex)
             {
-                return BadRequest(new { message = "No tables available"});
+                return BadRequest(new { message = ex.Message });
             }
         }
 
