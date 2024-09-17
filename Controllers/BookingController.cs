@@ -34,7 +34,7 @@ namespace Restaurant.Controllers
                 await _bookingService.BookTableAsync(restaurantId, customerId, startTime, endTime, numberOfGuests);
                 return Ok(new { message = "Table booked successfully" });
             }
-            catch (InvalidOperationException ex)
+            catch 
             {
                 return BadRequest(new { message = "No tables available"});
             }
@@ -61,7 +61,7 @@ namespace Restaurant.Controllers
         public async Task<IActionResult> AddTable([FromBody] TableDTO tableDTO)
         {
             await _bookingService.AddTableAsync(tableDTO);
-            return CreatedAtAction(nameof(AddTable), new { id = tableDTO.TableNumber }, tableDTO); 
+            return CreatedAtAction(nameof(AddTable), tableDTO); 
         }
 
         [HttpPut]

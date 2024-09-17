@@ -19,7 +19,7 @@ namespace Restaurant.Models
         public virtual Customer? Customer { get; set; }
 
         [ForeignKey("Table")]
-        public int? FK_TableId { get; set; }
+        public int FK_TableId { get; set; }
         public virtual Table? Table { get; set; }
         [ForeignKey("Restaurant")]
         public int FK_RestaurantId { get; set; }

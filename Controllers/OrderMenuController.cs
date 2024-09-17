@@ -23,7 +23,7 @@ namespace Restaurant.Controllers
         public async Task<IActionResult> AddMenu([FromBody] MenuDTO menuDTO)
         {
             await _orderMenuService.AddDishOrDrinkAsync(menuDTO);
-            return Ok(menuDTO);
+            return CreatedAtAction(nameof(AddMenu), menuDTO);
         }
 
         [HttpDelete]
@@ -67,7 +67,7 @@ namespace Restaurant.Controllers
         public async Task<IActionResult> AddOrder(int menuId, [FromBody] OrderDTO orderDTO)
         {
             await _orderMenuService.AddOrderAsync(menuId, orderDTO);
-            return Ok();
+            return CreatedAtAction(nameof(AddOrder), orderDTO);
         }
 
         [HttpDelete]
@@ -75,7 +75,7 @@ namespace Restaurant.Controllers
         public async Task<IActionResult> DeleteOrder(int orderId)
         {
             await _orderMenuService.DeleteOrderAsync(orderId);
-            return Ok();
+            return NoContent();
         }
 
         [HttpPut]

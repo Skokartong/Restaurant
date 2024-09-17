@@ -100,6 +100,7 @@ namespace Restaurant.Services
             {
                 FK_CustomerId=r.FK_CustomerId,
                 FK_RestaurantId=r.FK_RestaurantId,
+                FK_TableId = r.FK_TableId,
                 BookingStart=r.BookingStart,
                 BookingEnd=r.BookingEnd,
                 NumberOfGuests=r.NumberOfGuests

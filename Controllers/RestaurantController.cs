@@ -22,7 +22,7 @@ namespace Restaurant.Controllers
         public async Task<IActionResult> AddRestaurant([FromBody] RestaurantDTO restaurantDTO)
         {
             await _restaurantService.AddRestaurantAsync(restaurantDTO);
-            return Ok(restaurantDTO);
+            return CreatedAtAction(nameof(AddRestaurant), restaurantDTO);
         }
 
         [HttpDelete]
@@ -30,7 +30,7 @@ namespace Restaurant.Controllers
         public async Task<IActionResult> DeleteRestaurant(int restaurantId)
         {
             await _restaurantService.DeleteRestaurantAsync(restaurantId);
-            return Ok();
+            return NoContent();
         }
 
         [HttpPut]
