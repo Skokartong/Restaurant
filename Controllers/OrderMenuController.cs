@@ -23,7 +23,7 @@ namespace Restaurant.Controllers
         public async Task<IActionResult> AddMenu([FromBody] MenuDTO menuDTO)
         {
             await _orderMenuService.AddDishOrDrinkAsync(menuDTO);
-            return CreatedAtAction(nameof(AddMenu), menuDTO);
+            return Created("", menuDTO);
         }
 
         [HttpDelete]
@@ -67,7 +67,7 @@ namespace Restaurant.Controllers
         public async Task<IActionResult> AddOrder(int menuId, [FromBody] OrderDTO orderDTO)
         {
             await _orderMenuService.AddOrderAsync(menuId, orderDTO);
-            return CreatedAtAction(nameof(AddOrder), orderDTO);
+            return Created("", orderDTO);
         }
 
         [HttpDelete]
@@ -82,11 +82,12 @@ namespace Restaurant.Controllers
         [Route("/updateorder/{orderId}")]
         public async Task<IActionResult> UpdateOrder(int orderId,[FromBody] OrderDTO orderDTO)
         {
-            if (orderId != orderDTO.Id)
-            {
-                return BadRequest();
-            }
+            var existingOrder = await _orderMenuService.SearchOrderAsync(orderId);
 
+            if (existingOrder == null)
+            {
+                return NotFound();
+            }
             await _orderMenuService.UpdateOrderAsync(orderId, orderDTO);
             return NoContent();
         }

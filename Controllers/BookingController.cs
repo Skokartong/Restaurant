@@ -38,7 +38,7 @@ namespace Restaurant.Controllers
             try
             {
                 await _bookingService.BookTableAsync(restaurantId, customerId, startTime, endTime, numberOfGuests);
-                return CreatedAtAction(nameof(ViewBookings), new { message = "Table booked successfully" });
+                return Created("", new {message = "Table booked successfully" });
             }
             catch 
             {
@@ -66,8 +66,22 @@ namespace Restaurant.Controllers
         [Route("/addtable")]
         public async Task<IActionResult> AddTable([FromBody] TableDTO tableDTO)
         {
-            await _bookingService.AddTableAsync(tableDTO);
-            return CreatedAtAction(nameof(AddTable), tableDTO); 
+            var createdTable = await _bookingService.AddTableAsync(tableDTO);
+            return CreatedAtAction(nameof(ViewTables), new {restaurantId = tableDTO.FK_RestaurantId }, createdTable); 
+        }
+
+        [HttpGet]
+        [Route("/viewtables/{restaurantId}")]
+        public async Task<IActionResult> ViewTables(int restaurantId)
+        {
+            var tables = await _bookingService.GetTablesByRestaurantIdAsync(restaurantId);
+
+            if (tables == null || !tables.Any())
+            {
+                return NoContent();
+            }
+
+            return Ok(tables);
         }
 
         [HttpPut]

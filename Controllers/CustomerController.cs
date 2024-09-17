@@ -19,10 +19,10 @@ namespace Restaurant.Controllers
 
         [HttpPost]
         [Route("/addcustomer")]
-        public async Task<ActionResult> AddCustomer([FromBody] CustomerDTO customerDTO)
+        public async Task<IActionResult> AddCustomer([FromBody] CustomerDTO customerDTO)
         {
             await _customerService.AddCustomerAsync(customerDTO);
-            return CreatedAtAction(nameof(AddCustomer), customerDTO);
+            return Created("", customerDTO);
         }
 
         [HttpDelete]
@@ -34,7 +34,7 @@ namespace Restaurant.Controllers
         }
 
         [HttpGet]
-        [Route("/{customerId}")]
+        [Route("/viewcustomer/{customerId}")]
         public async Task<IActionResult> SearchCustomer(int customerId)
         {
             var customer = await _customerService.SearchCustomerAsync(customerId);

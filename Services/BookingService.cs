@@ -67,7 +67,7 @@ namespace Restaurant.Services
             }
         }
 
-        public async Task AddTableAsync(TableDTO tableDTO)
+        public async Task<Models.Table> AddTableAsync(TableDTO tableDTO)
         {
             var table = new Models.Table
             {
@@ -77,6 +77,20 @@ namespace Restaurant.Services
             };
 
             await _tableRepository.AddTableAsync(table);
+
+            return table;
+        }
+
+        public async Task<IEnumerable<TableDTO>> GetTablesByRestaurantIdAsync(int restaurantId)
+        {
+            var tables = await _tableRepository.GetTablesByRestaurantIdAsync(restaurantId);
+
+            return tables.Select(t => new TableDTO
+            {
+                TableNumber = t.TableNumber,
+                AmountOfSeats = t.AmountOfSeats,
+                FK_RestaurantId = t.FK_RestaurantId
+            }).ToList();
         }
 
         public async Task UpdateTableAsync(int tableId, TableDTO tableDTO)

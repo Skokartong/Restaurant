@@ -40,6 +40,12 @@ namespace Restaurant.Data.Repos
             return availableTable;
         }
 
+        public async Task<IEnumerable<Table>> GetTablesByRestaurantIdAsync(int restaurantId)
+        {
+            return await _context.Tables
+                .Where(t => t.FK_RestaurantId == restaurantId)
+                .ToListAsync();
+        }
 
         public async Task UpdateTableAsync(int tableId, Table updatedTable)
         {

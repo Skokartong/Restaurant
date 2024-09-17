@@ -8,7 +8,8 @@ namespace Restaurant.Services.IServices
         Task<IEnumerable<ReservationDTO>> ViewAllReservationsAsync();
         Task UpdateReservationAsync(int reservationId, ReservationDTO reservationDTO);
         Task DeleteReservationAsync(int reservationId);
-        Task AddTableAsync(TableDTO tableDTO);
+        Task<Table> AddTableAsync(TableDTO tableDTO);
+        Task<IEnumerable<TableDTO>> GetTablesByRestaurantIdAsync(int restaurantId);
         Task UpdateTableAsync(int tableId, TableDTO tableDTO);
         Task DeleteTableAsync(int tableId);
         Task BookTableAsync(int restaurantId, int customerId, DateTime startTime, DateTime endTime, int numberOfGuests);

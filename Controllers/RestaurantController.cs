@@ -22,7 +22,7 @@ namespace Restaurant.Controllers
         public async Task<IActionResult> AddRestaurant([FromBody] RestaurantDTO restaurantDTO)
         {
             await _restaurantService.AddRestaurantAsync(restaurantDTO);
-            return CreatedAtAction(nameof(AddRestaurant), restaurantDTO);
+            return Created("", restaurantDTO);
         }
 
         [HttpDelete]

@@ -12,6 +12,7 @@ namespace Restaurant.Services
         {
             _restaurantRepository = restaurantRepository;
         }
+
         public async Task AddRestaurantAsync(RestaurantDTO restaurantDTO)
         {
             var addRestaurant = new Models.Restaurant
