@@ -31,9 +31,8 @@ namespace Restaurant.Data.Repos
             if(deleteItem!=null)
             {
                 _context.Menus.Remove(deleteItem);
+                await _context.SaveChangesAsync();
             }
-
-            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Menu?>> SeeMenuAsync(int restaurantId)

@@ -25,9 +25,8 @@ namespace Restaurant.Data.Repos
             if(deleteCustomer!=null)
             {
                 _context.Customers.Remove(deleteCustomer);
+                await _context.SaveChangesAsync();
             }
-
-            await _context.SaveChangesAsync();
         }
 
         public async Task<Customer?> SearchCustomerAsync(int customerId)

@@ -22,6 +22,12 @@ namespace Restaurant.Controllers
         public async Task<IActionResult> ViewBookings()
         {
             var bookings = await _bookingService.ViewAllReservationsAsync();
+
+            if (bookings == null || !bookings.Any())
+            {
+                return NoContent(); 
+            }
+
             return Ok(bookings);
         }
 
@@ -32,7 +38,7 @@ namespace Restaurant.Controllers
             try
             {
                 await _bookingService.BookTableAsync(restaurantId, customerId, startTime, endTime, numberOfGuests);
-                return Ok(new { message = "Table booked successfully" });
+                return CreatedAtAction(nameof(ViewBookings), new { message = "Table booked successfully" });
             }
             catch 
             {

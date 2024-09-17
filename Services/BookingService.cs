@@ -42,7 +42,12 @@ namespace Restaurant.Services
 
     public async Task DeleteReservationAsync(int reservationId)
         {
-            await _reservationRepository.DeleteReservationAsync(reservationId);
+            var reservation = await _reservationRepository.GetReservationByIdAsync(reservationId);
+
+            if (reservation != null)
+            {
+                await _reservationRepository.DeleteReservationAsync(reservationId);
+            }
         }
 
         public async Task UpdateReservationAsync(int reservationId, ReservationDTO reservationDTO)
