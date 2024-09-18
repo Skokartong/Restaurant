@@ -11,11 +11,11 @@ namespace Restaurant.Models
         public int TableNumber { get; set; }
         [Required]
         public int AmountOfSeats { get; set; }
-        public ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<Reservation> Reservations { get; set; }
 
         [ForeignKey("Restaurant")]
         public int FK_RestaurantId { get; set; }
-        public Restaurant Restaurant { get; set; }  
+        public virtual Restaurant Restaurant { get; set; }  
     }
 }

@@ -56,7 +56,7 @@ namespace Restaurant.Controllers
 
         [HttpGet]
         [Route("/viewmenu/{restaurantId}")]
-        public async Task<ActionResult<List<Menu>>> GetMenu(int restaurantId)
+        public async Task<ActionResult<List<MenuDTO>>> GetMenu(int restaurantId)
         {
             var menu = await _orderMenuService.SeeMenuAsync(restaurantId);
             return Ok(menu);
