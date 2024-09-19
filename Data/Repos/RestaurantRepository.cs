@@ -31,7 +31,9 @@ namespace Restaurant.Data.Repos
 
         public async Task<IEnumerable<Models.Restaurant>> GetAllRestaurantsAsync()
         {
-            var restaurants = await _context.Restaurants.ToListAsync();
+            var restaurants = await _context.Restaurants
+                .AsNoTracking()
+                .ToListAsync();
 
             if (restaurants==null)
             {

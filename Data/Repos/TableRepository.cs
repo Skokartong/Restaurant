@@ -44,6 +44,7 @@ namespace Restaurant.Data.Repos
         {
             return await _context.Tables
                 .Where(t => t.FK_RestaurantId == restaurantId)
+                .AsNoTracking()
                 .ToListAsync();
         }
 

@@ -44,7 +44,9 @@ namespace Restaurant.Data.Repos
 
         public async Task<IEnumerable<Reservation>> ViewAllReservationsAsync()
         {
-            var reservationList = await _context.Reservations.ToListAsync();
+            var reservationList = await _context.Reservations
+                .AsNoTracking()
+                .ToListAsync();
             return reservationList;
         }
     }

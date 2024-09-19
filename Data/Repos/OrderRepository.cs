@@ -34,6 +34,7 @@ namespace Restaurant.Data.Repos
             var order = await _context.Orders
                 .Include(o => o.Menu)
                 .Include(o => o.Customer)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(o => o.Id == orderId);
 
             if(order==null)
@@ -50,6 +51,7 @@ namespace Restaurant.Data.Repos
                            .Where(o => o.FK_TableId == tableId)
                            .Include(o => o.Customer)
                            .Include(o => o.Menu)
+                           .AsNoTracking()
                            .ToListAsync();
 
             return orders;
