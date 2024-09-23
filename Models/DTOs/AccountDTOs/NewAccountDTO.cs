@@ -2,7 +2,7 @@
 
 namespace Restaurant.Models.DTOs.AccountDTOs
 {
-    public class NewAccount
+    public class NewAccountDTO
     {
         [Required]
         [StringLength(50)]

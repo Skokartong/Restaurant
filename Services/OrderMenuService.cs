@@ -31,6 +31,11 @@ namespace Restaurant.Services
             await _menuRepository.AddDishOrDrinkAsync(menu);
         }
 
+        public async Task DeleteDishOrDrinkAsync(int menuId)
+        {
+            await _menuRepository.DeleteDishOrDrinkAsync(menuId);
+        }
+
         public async Task UpdateDishOrDrinkAsync(int menuId, MenuDTO menuDTO)
         {
             var updateMenu = new Menu
@@ -44,11 +49,6 @@ namespace Restaurant.Services
             };
 
             await _menuRepository.UpdateDishOrDrinkAsync(menuId, updateMenu);
-        }
-
-        public async Task DeleteDishOrDrinkAsync(int menuId)
-        {
-            await _menuRepository.DeleteDishOrDrinkAsync(menuId);
         }
 
         public async Task<IEnumerable<ViewMenuDTO>> SeeMenuAsync(int restaurantId)

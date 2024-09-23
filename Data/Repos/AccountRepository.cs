@@ -1,6 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Restaurant.Data.Repos.IRepos;
 using Restaurant.Models;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace Restaurant.Data.Repos
 {
@@ -13,16 +17,16 @@ namespace Restaurant.Data.Repos
             _context = context;
         }
 
-        // Checking if email already is registred when new user 
-        public async Task<bool> AccountExistsByEmailAsync(string email)
+        public async Task<Account?> AccountExistsByEmailAsync(string email)
         {
-            return await _context.Accounts.AnyAsync(a => a.Email == email);
+            var existingAccount = await _context.Accounts.SingleOrDefaultAsync(a => a.Email == email);
+            return existingAccount;
         }
 
-        // Checking if username already is registred when new user 
-        public async Task<bool> AccountExistsByUsernameAsync(string username)
+        public async Task<Account?> AccountExistsByUsernameAsync(string username)
         {
-            return await _context.Accounts.AnyAsync(a => a.UserName == username);
+            var existingAccount = await _context.Accounts.SingleOrDefaultAsync(a => a.UserName == username);
+            return existingAccount;
         }
 
         public async Task AddAccountAsync(Account account)
@@ -42,6 +46,11 @@ namespace Restaurant.Data.Repos
             }
         }
 
+        public async Task<Account?> FindAccountByIdAsync(int accountId)
+        {
+            return await _context.Accounts.FindAsync(accountId);
+        }
+
         public async Task UpdateAccountAsync(int accountId, Account updatedAccount)
         {
             var existingAccount = await _context.Accounts.FindAsync(accountId);
@@ -51,11 +60,6 @@ namespace Restaurant.Data.Repos
                 _context.Accounts.Update(updatedAccount);
                 await _context.SaveChangesAsync();
             };
-        }
-
-        public async Task<bool> UserHasRoleAsync(int accountId, string role)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -139,3 +139,4 @@ C:\Users\Amanda\Documents\Visual Studio 2022\Templates\ProjectTemplates\C#\Resta
 C:\Users\Amanda\Documents\Visual Studio 2022\Templates\ProjectTemplates\C#\Restaurant\obj\Debug\net8.0\ref\Restaurant.dll
 C:\Users\Amanda\Documents\Visual Studio 2022\Templates\ProjectTemplates\C#\Restaurant\obj\Debug\net8.0\Restaurant.sourcelink.json
 C:\Users\Amanda\Documents\Visual Studio 2022\Templates\ProjectTemplates\C#\Restaurant\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Amanda\Documents\Visual Studio 2022\Templates\ProjectTemplates\C#\Restaurant\bin\Debug\net8.0\BCrypt.Net-Next.dll

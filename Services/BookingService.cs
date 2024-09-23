@@ -27,6 +27,37 @@ namespace Restaurant.Services
             _customerRepository = customerRepository;
         }
 
+        public async Task AddTableAsync(TableDTO tableDTO)
+        {
+            var table = new Models.Table
+            {
+                Id = tableDTO.Id,
+                TableNumber = tableDTO.TableNumber,
+                AmountOfSeats = tableDTO.AmountOfSeats,
+                FK_RestaurantId = tableDTO.FK_RestaurantId,
+            };
+
+            await _tableRepository.AddTableAsync(table);
+        }
+
+        public async Task DeleteTableAsync(int tableId)
+        {
+            await _tableRepository.DeleteTableAsync(tableId);
+        }
+
+        public async Task UpdateTableAsync(int tableId, TableDTO tableDTO)
+        {
+            var table = new Models.Table
+            {
+                Id = tableId,
+                TableNumber = tableDTO.TableNumber,
+                AmountOfSeats = tableDTO.AmountOfSeats,
+                FK_RestaurantId = tableDTO.FK_RestaurantId,
+            };
+
+            await _tableRepository.UpdateTableAsync(tableId, table);
+        }
+
         public async Task<IEnumerable<TableDTO>> CheckAvailabilityAsync(AvailabilityCheckDTO checkDTO)
         {
             var availableTables = await _tableRepository.GetAvailableTablesAsync(
@@ -113,40 +144,6 @@ namespace Restaurant.Services
             }
 
             await _reservationRepository.UpdateReservationAsync(existingReservation);
-        }
-
-
-        public async Task<Models.Table> AddTableAsync(TableDTO tableDTO)
-        {
-            var table = new Models.Table
-            {
-                Id = tableDTO.Id,
-                TableNumber = tableDTO.TableNumber,
-                AmountOfSeats = tableDTO.AmountOfSeats,
-                FK_RestaurantId = tableDTO.FK_RestaurantId,
-            };
-
-            await _tableRepository.AddTableAsync(table);
-
-            return table;
-        }
-
-        public async Task UpdateTableAsync(int tableId, TableDTO tableDTO)
-        {
-            var table = new Models.Table
-            {
-                Id = tableId,
-                TableNumber = tableDTO.TableNumber,
-                AmountOfSeats = tableDTO.AmountOfSeats,
-                FK_RestaurantId = tableDTO.FK_RestaurantId,
-            };
-
-            await _tableRepository.UpdateTableAsync(tableId, table);
-        }
-
-        public async Task DeleteTableAsync(int tableId)
-        {
-            await _tableRepository.DeleteTableAsync(tableId);
         }
 
         public async Task<IEnumerable<ViewReservationDTO>> ViewAllReservationsAsync()

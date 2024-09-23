@@ -2,7 +2,7 @@
 
 namespace Restaurant.Models.DTOs.AccountDTOs
 {
-    public class LogIn
+    public class LogInDTO
     {
         [Required]
         [StringLength(50)]

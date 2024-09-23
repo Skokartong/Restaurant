@@ -18,6 +18,19 @@ Env.Load();
 builder.Services.AddDbContext<RestaurantContext>(options =>
     options.UseSqlServer(Environment.GetEnvironmentVariable("DefaultConnection")));
 
+var jwtKey = builder.Configuration["JwtKey"];
+var jwtIssuer = builder.Configuration["JwtIssuer"];
+var jwtAudience = builder.Configuration["JwtAudience"];
+
+Console.WriteLine($"JwtKey: {jwtKey}");
+Console.WriteLine($"JwtIssuer: {jwtIssuer}");
+Console.WriteLine($"JwtAudience: {jwtAudience}");
+
+if (string.IsNullOrEmpty(jwtKey) || string.IsNullOrEmpty(jwtIssuer) || string.IsNullOrEmpty(jwtAudience))
+{
+    throw new Exception("JWT configuration values cannot be null or empty.");
+}
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -30,9 +43,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt: Issuer"],
-            ValidAudience = builder.Configuration["Jwt: Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt: Key"]))
+            ValidIssuer = builder.Configuration["JwtIssuer"],
+            ValidAudience = builder.Configuration["JwtAudience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtKey"]))
         };
     });
 

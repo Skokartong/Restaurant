@@ -88,7 +88,7 @@ namespace Restaurant.Controllers
         [Route("/addtable")]
         public async Task<IActionResult> AddTable([FromBody] TableDTO tableDTO)
         {
-            var createdTable = await _bookingService.AddTableAsync(tableDTO);
+            await _bookingService.AddTableAsync(tableDTO);
             return Created("", new {message = "Table created successfully"}); 
         }
 

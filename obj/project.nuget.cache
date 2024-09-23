@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "0jKTZgDLD3+057q/u73mJ1wCXvfqp9SbDgaGj7lbINk34GsIw+kyQEH0UOjL125bbGtWFaPMRhLgLle55NzmiA==",
+  "dgSpecHash": "sg5s9KI0gALa6iZFtETxHztXRc3QuNngTESdyyYuQG4usUmGaJln44c9757oaqLYgc+yO+8o/c3nZMtEs/IX2Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\Amanda\\Documents\\Visual Studio 2022\\Templates\\ProjectTemplates\\C#\\Restaurant\\Restaurant.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Amanda\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\Amanda\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
+    "C:\\Users\\Amanda\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Amanda\\.nuget\\packages\\dotnetenv\\3.1.1\\dotnetenv.3.1.1.nupkg.sha512",
     "C:\\Users\\Amanda\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Amanda\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\8.0.8\\microsoft.aspnetcore.authentication.jwtbearer.8.0.8.nupkg.sha512",

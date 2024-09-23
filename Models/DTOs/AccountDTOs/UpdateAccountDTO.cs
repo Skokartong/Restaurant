@@ -2,7 +2,7 @@
 
 namespace Restaurant.Models.DTOs.AccountDTOs
 {
-    public class UpdateAccount
+    public class UpdateAccountDTO
     {
         public string Email { get; set; }
 
