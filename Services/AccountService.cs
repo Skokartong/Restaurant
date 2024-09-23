@@ -1,5 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Restaurant.Data.Repos.IRepos;
+using Restaurant.Migrations;
 using Restaurant.Models;
 using Restaurant.Models.DTOs.AccountDTOs;
 using Restaurant.Services.IServices;
@@ -92,10 +93,10 @@ namespace Restaurant.Services
         private string GenerateJwtToken(Account account, string role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-
-            var key = Encoding.UTF8.GetBytes(_configuration["JwtKey"]);
+            byte[] key = Encoding.UTF8.GetBytes(_configuration["JwtKey"]);
             var issuer = _configuration["JwtIssuer"];
             var audience = _configuration["JwtAudience"];
+
 
             var claims = new ClaimsIdentity(new[]{
                 new Claim(ClaimTypes.Name, $"{account.FirstName} {account.LastName}"),

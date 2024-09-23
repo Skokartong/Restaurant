@@ -28,8 +28,8 @@ namespace Restaurant.Controllers
         [Route("/login")]
         public async Task<IActionResult> LogIn([FromBody] LogInDTO logInDTO)
         {
-            await _accountService.LogInAsync(logInDTO);
-            return Ok();
+            string token = await _accountService.LogInAsync(logInDTO);
+            return Ok(new { token });
         }
 
         [HttpPut]

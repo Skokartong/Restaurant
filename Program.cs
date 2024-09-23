@@ -19,12 +19,17 @@ Env.Load();
 builder.Services.AddDbContext<RestaurantContext>(options =>
     options.UseSqlServer(Environment.GetEnvironmentVariable("DefaultConnection")));
 
-var key = Environment.GetEnvironmentVariable("JwtKey");
-var issuer = Environment.GetEnvironmentVariable("JwtIssuer");
-var audience = Environment.GetEnvironmentVariable("JwtAudience");
+builder.Configuration.AddEnvironmentVariables(); 
+
+var key = builder.Configuration["JwtKey"];
+var issuer = builder.Configuration["JwtIssuer"];
+var audience = builder.Configuration["JwtAudience"];
+
+Console.WriteLine($"JwtKey: {key}");
+Console.WriteLine($"JwtIssuer: {issuer}");
+Console.WriteLine($"JwtAudience: {audience}");
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
