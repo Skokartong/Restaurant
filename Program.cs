@@ -8,6 +8,7 @@ using Restaurant.Data.Repos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,18 +19,9 @@ Env.Load();
 builder.Services.AddDbContext<RestaurantContext>(options =>
     options.UseSqlServer(Environment.GetEnvironmentVariable("DefaultConnection")));
 
-var jwtKey = builder.Configuration["JwtKey"];
-var jwtIssuer = builder.Configuration["JwtIssuer"];
-var jwtAudience = builder.Configuration["JwtAudience"];
-
-Console.WriteLine($"JwtKey: {jwtKey}");
-Console.WriteLine($"JwtIssuer: {jwtIssuer}");
-Console.WriteLine($"JwtAudience: {jwtAudience}");
-
-if (string.IsNullOrEmpty(jwtKey) || string.IsNullOrEmpty(jwtIssuer) || string.IsNullOrEmpty(jwtAudience))
-{
-    throw new Exception("JWT configuration values cannot be null or empty.");
-}
+var key = Environment.GetEnvironmentVariable("JwtKey");
+var issuer = Environment.GetEnvironmentVariable("JwtIssuer");
+var audience = Environment.GetEnvironmentVariable("JwtAudience");
 
 // Add services to the container.
 
@@ -43,9 +35,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["JwtIssuer"],
-            ValidAudience = builder.Configuration["JwtAudience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtKey"]))
+            ValidIssuer = issuer,
+            ValidAudience = audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
         };
     });
 
@@ -61,6 +53,8 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IMenuRepository, MenuRepository>();
 builder.Services.AddScoped<ITableRepository, TableRepository>();
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
