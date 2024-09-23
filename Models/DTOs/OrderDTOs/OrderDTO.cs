@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Restaurant.Models.DTOs
+﻿namespace Restaurant.Models.DTOs.OrderDTOs
 {
     public class OrderDTO
     {

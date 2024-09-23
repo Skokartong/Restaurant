@@ -1,5 +1,5 @@
 ﻿using Restaurant.Models;
-using Restaurant.Models.DTOs;
+using Restaurant.Models.DTOs.CustomerDTOs;
 
 namespace Restaurant.Services.IServices
 {

@@ -1,6 +1,6 @@
 ﻿using Restaurant.Data.Repos.IRepos;
 using Restaurant.Models;
-using Restaurant.Models.DTOs;
+using Restaurant.Models.DTOs.CustomerDTOs;
 using Restaurant.Services.IServices;
 
 namespace Restaurant.Services
@@ -20,6 +20,7 @@ namespace Restaurant.Services
                 Name = customerDTO.Name,
                 Phone = customerDTO.Phone,
                 Email = customerDTO.Email,
+                Address = customerDTO.Address
             };
 
             await _customerRepository.AddCustomerAsync(customer);
@@ -44,6 +45,7 @@ namespace Restaurant.Services
                 Name = customer.Name,
                 Email = customer.Email,
                 Phone = customer.Phone,
+                Address = customer.Address
             };
         }
 
@@ -60,7 +62,8 @@ namespace Restaurant.Services
             {
                 Name = c.Name,
                 Email = c.Email,
-                Phone = c.Phone
+                Phone = c.Phone,
+                Address = c.Address
             }).ToList();
         }
 
@@ -74,6 +77,7 @@ namespace Restaurant.Services
                 Name = customerDTO.Name,
                 Phone = customerDTO.Phone,
                 Email = customerDTO.Email,
+                Address = customerDTO.Address
             };
 
             await _customerRepository.UpdateCustomerAsync(updatedCustomer);
@@ -82,7 +86,8 @@ namespace Restaurant.Services
             {
                 Name = updatedCustomer.Name,
                 Phone = updatedCustomer.Phone,
-                Email = updatedCustomer.Email
+                Email = updatedCustomer.Email,
+                Address = customerDTO.Address
             };
         }
     }

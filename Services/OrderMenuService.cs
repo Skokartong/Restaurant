@@ -1,6 +1,7 @@
 ﻿using Restaurant.Data.Repos.IRepos;
 using Restaurant.Models;
-using Restaurant.Models.DTOs;
+using Restaurant.Models.DTOs.MenuDTOs;
+using Restaurant.Models.DTOs.OrderDTOs;
 using Restaurant.Services.IServices;
 
 namespace Restaurant.Services
@@ -16,15 +17,15 @@ namespace Restaurant.Services
             _orderRepository = orderRepository;
         }
 
-        public async Task AddDishOrDrinkAsync(MenuDTO menuItemDTO)
+        public async Task AddDishOrDrinkAsync(MenuDTO menuDTO)
         {
             var menu = new Menu
             {
-                NameOfDish = menuItemDTO.NameOfDish,
-                Drink = menuItemDTO.Drink,
-                Price = menuItemDTO.Price,
-                IsAvailable = menuItemDTO.IsAvailable,
-                FK_RestaurantId = menuItemDTO.FK_RestaurantId
+                NameOfDish = menuDTO.NameOfDish,
+                Drink = menuDTO.Drink,
+                Price = menuDTO.Price,
+                IsAvailable = menuDTO.IsAvailable,
+                FK_RestaurantId = menuDTO.FK_RestaurantId
             };
 
             await _menuRepository.AddDishOrDrinkAsync(menu);
@@ -50,7 +51,7 @@ namespace Restaurant.Services
             await _menuRepository.DeleteDishOrDrinkAsync(menuId);
         }
 
-        public async Task<IEnumerable<MenuDTO>> SeeMenuAsync(int restaurantId)
+        public async Task<IEnumerable<ViewMenuDTO>> SeeMenuAsync(int restaurantId)
         {
             var menuList = await _menuRepository.SeeMenuAsync(restaurantId);
 
@@ -59,13 +60,12 @@ namespace Restaurant.Services
                 throw new InvalidOperationException($"There is no menu available at restaurant with id: {restaurantId} at the moment.");
             }
 
-            return menuList.Select(m => new MenuDTO
+            return menuList.Select(m => new ViewMenuDTO
             {
                 NameOfDish = m.NameOfDish,
                 Drink = m.Drink,
                 Price = m.Price,
                 IsAvailable = m.IsAvailable,
-                FK_RestaurantId = m.FK_RestaurantId
             }).ToList();
         }
 
@@ -111,7 +111,7 @@ namespace Restaurant.Services
             await _orderRepository.DeleteOrderAsync(orderId);
         }
 
-        public async Task<OrderDTO> SearchOrderAsync(int orderId)
+        public async Task<ViewOrderDTO> SearchOrderAsync(int orderId)
         {
             var order = await _orderRepository.SearchOrderAsync(orderId);
 
@@ -120,16 +120,17 @@ namespace Restaurant.Services
                 throw new InvalidOperationException("There is no order with the selected id");
             }
 
-            return new OrderDTO
+            return new ViewOrderDTO
             {
+                CustomerName = order.Customer?.Name??"",
+                NameOfDish = order.Menu?.NameOfDish??"",
+                Drink = order.Menu?.Drink??"",
                 Amount = order.Amount,
-                FK_CustomerId = order.FK_CustomerId,
-                FK_MenuId = order.FK_MenuId,
-                FK_TableId = order.FK_TableId
+                TableNumber = order.Table?.TableNumber?? 0
             };
         }
 
-        public async Task<IEnumerable<OrderDTO>> SeeAllOrdersFromTableAsync(int tableId)
+        public async Task<IEnumerable<ViewOrderDTO>> SeeAllOrdersFromTableAsync(int tableId)
         {
             var orders = await _orderRepository.SeeAllOrdersFromTableAsync(tableId);
 
@@ -138,15 +139,17 @@ namespace Restaurant.Services
                 throw new InvalidCastException($"No orders from table with id: {tableId} found");
             }
 
-            return orders.Select(o => new OrderDTO
+            return orders.Select(o => new ViewOrderDTO
             {
+                CustomerName = o.Customer?.Name??"",
+                NameOfDish = o.Menu?.NameOfDish??"",
+                Drink = o.Menu?.Drink??"",
+                TableNumber = o.Table?.TableNumber?? 0,
                 Amount = o.Amount,
-                FK_CustomerId = o.FK_CustomerId,
-                FK_MenuId = o.FK_MenuId
             }).ToList();
         }
 
-        public async Task<MenuDTO> SearchMenuItemAsync(int menuId)
+        public async Task<ViewMenuDTO> SearchMenuItemAsync(int menuId)
         {
             var menuItem = await _menuRepository.SearchMenuItemAsync(menuId);
 
@@ -155,13 +158,13 @@ namespace Restaurant.Services
                 throw new InvalidCastException($"No dish with id:{menuId} found");
             }
 
-            return new MenuDTO
+            return new ViewMenuDTO
             {
                 NameOfDish = menuItem.NameOfDish,
                 Drink = menuItem.Drink,
+                Ingredients = menuItem.Ingredients,
                 Price = menuItem.Price,
                 IsAvailable = menuItem.IsAvailable,
-                FK_RestaurantId = menuItem.FK_RestaurantId
             };
         }
     }

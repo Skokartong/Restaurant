@@ -1,5 +1,5 @@
 ﻿using Restaurant.Data.Repos.IRepos;
-using Restaurant.Models.DTOs;
+using Restaurant.Models.DTOs.RestaurantDTOs;
 using Restaurant.Services.IServices;
 
 namespace Restaurant.Services
@@ -18,7 +18,8 @@ namespace Restaurant.Services
             var addRestaurant = new Models.Restaurant
             {
                 RestaurantName = restaurantDTO.RestaurantName,
-                TypeOfRestaurant = restaurantDTO.TypeOfRestaurant
+                TypeOfRestaurant = restaurantDTO.TypeOfRestaurant,
+                AdditionalInformation = restaurantDTO.AdditionalInformation
             };
 
             await _restaurantRepository.AddRestaurantAsync(addRestaurant);
@@ -35,7 +36,8 @@ namespace Restaurant.Services
             {
                 Id = restaurantId,
                 RestaurantName = restaurantDTO.RestaurantName,
-                TypeOfRestaurant = restaurantDTO.TypeOfRestaurant
+                TypeOfRestaurant = restaurantDTO.TypeOfRestaurant,
+                AdditionalInformation = restaurantDTO.AdditionalInformation
             };
 
             await _restaurantRepository.UpdateRestaurantAsync(restaurantId, updatedRestaurant);
@@ -48,7 +50,8 @@ namespace Restaurant.Services
             var restaurantDTO = restaurantsList.Select(r => new RestaurantDTO
             {
                 RestaurantName = r.RestaurantName,
-                TypeOfRestaurant = r.TypeOfRestaurant
+                TypeOfRestaurant = r.TypeOfRestaurant,
+                AdditionalInformation = r.AdditionalInformation
             });
 
             return restaurantDTO;
@@ -61,7 +64,8 @@ namespace Restaurant.Services
             return new RestaurantDTO
             {
                 RestaurantName = restaurant.RestaurantName,
-                TypeOfRestaurant = restaurant.TypeOfRestaurant
+                TypeOfRestaurant = restaurant.TypeOfRestaurant,
+                AdditionalInformation = restaurant.AdditionalInformation
             };
         }
     }

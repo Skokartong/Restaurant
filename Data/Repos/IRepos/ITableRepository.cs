@@ -7,7 +7,6 @@ namespace Restaurant.Data.Repos.IRepos
         Task AddTableAsync(Table table);
         Task UpdateTableAsync(int tableId, Table updatedTable);
         Task DeleteTableAsync(int tableId);
-        Task<Table?> GetAvailableTableAsync(int restaurantId, DateTime startTime, DateTime endTime, int numberOfGuests);
-        Task<IEnumerable<Table>> GetTablesByRestaurantIdAsync(int restaurantId);
+        Task<IEnumerable<Table>> GetAvailableTablesAsync(int restaurantId, DateTime startTime, DateTime endTime, int numberOfGuests);
     }
 }

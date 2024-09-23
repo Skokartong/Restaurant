@@ -1,4 +1,4 @@
-﻿using Restaurant.Models.DTOs;
+﻿using Restaurant.Models.DTOs.RestaurantDTOs;
 
 namespace Restaurant.Services.IServices
 {

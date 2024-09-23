@@ -13,6 +13,7 @@ namespace Restaurant.Models
         public DateTime BookingStart { get; set; }
         [Required]
         public DateTime BookingEnd { get; set; }
+        public string? Message { get; set; }
 
         [ForeignKey("Customer")]
         public int FK_CustomerId { get; set; }

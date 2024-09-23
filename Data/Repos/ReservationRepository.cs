@@ -6,7 +6,7 @@ using Restaurant.Models.DTOs;
 
 namespace Restaurant.Data.Repos
 {
-    public class ReservationRepository:IReservationRepository
+    public class ReservationRepository : IReservationRepository
     {
         private readonly RestaurantContext _context;
 
@@ -25,7 +25,7 @@ namespace Restaurant.Data.Repos
         {
             var reservation = await _context.Reservations.FindAsync(reservationId);
 
-            if (reservation!=null)
+            if (reservation != null)
             {
                 _context.Reservations.Remove(reservation);
                 await _context.SaveChangesAsync();
@@ -45,8 +45,9 @@ namespace Restaurant.Data.Repos
         public async Task<IEnumerable<Reservation>> ViewAllReservationsAsync()
         {
             var reservationList = await _context.Reservations
-                .AsNoTracking()
-                .ToListAsync();
+            .Include(r => r.Customer)
+            .AsNoTracking()
+            .ToListAsync();
             return reservationList;
         }
     }

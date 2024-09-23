@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Restaurant.Data.Repos.IRepos;
 using Restaurant.Services.IServices;
 using Restaurant.Models;
-using Restaurant.Models.DTOs;
+using Restaurant.Models.DTOs.MenuDTOs;
+using Restaurant.Models.DTOs.OrderDTOs;
 
 namespace Restaurant.Controllers
 {
@@ -44,7 +45,7 @@ namespace Restaurant.Controllers
 
         [HttpGet]
         [Route("/viewdish/{menuId}")]
-        public async Task<ActionResult<MenuDTO>> GetMenuItem(int menuId)
+        public async Task<ActionResult<ViewMenuDTO>> GetMenuItem(int menuId)
         {
             var menuItem = await _orderMenuService.SearchMenuItemAsync(menuId);
             if (menuItem == null)
@@ -56,7 +57,7 @@ namespace Restaurant.Controllers
 
         [HttpGet]
         [Route("/viewmenu/{restaurantId}")]
-        public async Task<ActionResult<List<MenuDTO>>> GetMenu(int restaurantId)
+        public async Task<ActionResult<List<ViewMenuDTO>>> GetMenu(int restaurantId)
         {
             var menu = await _orderMenuService.SeeMenuAsync(restaurantId);
             return Ok(menu);
@@ -94,7 +95,7 @@ namespace Restaurant.Controllers
 
         [HttpGet]
         [Route("/getorder/{orderId}")]
-        public async Task<ActionResult<OrderDTO>> GetOrder(int orderId)
+        public async Task<ActionResult<ViewOrderDTO>> GetOrder(int orderId)
         {
             var order = await _orderMenuService.SearchOrderAsync(orderId);
             if (order == null)
@@ -106,7 +107,7 @@ namespace Restaurant.Controllers
 
         [HttpGet]
         [Route("/vieworders/{tableId}")]
-        public async Task<ActionResult<List<OrderDTO>>> GetOrdersByTable(int tableId)
+        public async Task<ActionResult<List<ViewOrderDTO>>> GetOrdersByTable(int tableId)
         {
             var orders = await _orderMenuService.SeeAllOrdersFromTableAsync(tableId);
             return Ok(orders);

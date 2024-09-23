@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Restaurant.Models.DTOs;
+using Restaurant.Models.DTOs.CustomerDTOs;
 using Restaurant.Services.IServices;
 using System.Threading.Tasks;
 

@@ -8,11 +8,13 @@ namespace Restaurant.Models
         [Key]
         public int Id { get; set; }
         [MaxLength(30)]
-        public string? NameOfDish { get; set; }
+        public string NameOfDish { get; set; }
         [MaxLength(30)]
-        public string? Drink { get; set; }
+        public string Drink { get; set; }
         [Required]
         public bool IsAvailable { get; set; }
+        public string? Ingredients { get; set; }
+
         [Required]
         public double Price { get; set; }
 

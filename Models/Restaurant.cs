@@ -12,6 +12,7 @@ namespace Restaurant.Models
         [Required]
         [MaxLength(50)]
         public string TypeOfRestaurant { get; set; }
+        public string? AdditionalInformation { get; set; }
         public virtual ICollection<Menu> Menus { get; set; }
         public virtual ICollection<Customer> Customers { get; set; }
         public virtual ICollection<Table> Tables { get; set; }

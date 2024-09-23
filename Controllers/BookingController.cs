@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Models;
 using Restaurant.Models.DTOs;
+using Restaurant.Models.DTOs.ReservationDTOs;
+using Restaurant.Models.DTOs.RestaurantDTOs;
+using Restaurant.Models.DTOs.TableDTOs;
 using Restaurant.Services.IServices;
 
 namespace Restaurant.Controllers
@@ -32,13 +35,32 @@ namespace Restaurant.Controllers
         }
 
         [HttpPost]
-        [Route("/booktable")]
-        public async Task<IActionResult> BookTable(int restaurantId, int customerId, DateTime startTime, DateTime endTime, int numberOfGuests)
+        [Route("/checkavailability")]
+        public async Task<IActionResult> CheckAvailability([FromBody] AvailabilityCheckDTO checkDTO)
         {
             try
             {
-                await _bookingService.BookTableAsync(restaurantId, customerId, startTime, endTime, numberOfGuests);
-                return Created("", new {message = "Table booked successfully" });
+                var availableTables = await _bookingService.CheckAvailabilityAsync(checkDTO);
+                if (availableTables == null || !availableTables.Any())
+                {
+                    return NoContent(); 
+                }
+                return Ok(availableTables); 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [Route("/booktable")]
+        public async Task<IActionResult> BookTable([FromBody] AddReservationDTO reservationDTO, int customerId, int restaurantId)
+        {
+            try
+            {
+                await _bookingService.BookTableAsync(reservationDTO, customerId, restaurantId);
+                return Created("", new { message = "Table booked successfully" });
             }
             catch (Exception ex)
             {
@@ -56,7 +78,7 @@ namespace Restaurant.Controllers
 
         [HttpPut]
         [Route("/updatebooking/{reservationId}")]
-        public async Task<IActionResult> UpdateReservation(int reservationId,[FromBody] ReservationDTO reservationDTO)
+        public async Task<IActionResult> UpdateReservation(int reservationId,[FromBody] UpdateReservationDTO reservationDTO)
         {
             await _bookingService.UpdateReservationAsync(reservationId, reservationDTO);
             return NoContent(); 
@@ -67,21 +89,7 @@ namespace Restaurant.Controllers
         public async Task<IActionResult> AddTable([FromBody] TableDTO tableDTO)
         {
             var createdTable = await _bookingService.AddTableAsync(tableDTO);
-            return CreatedAtAction(nameof(ViewTables), new {restaurantId = tableDTO.FK_RestaurantId }, createdTable); 
-        }
-
-        [HttpGet]
-        [Route("/viewtables/{restaurantId}")]
-        public async Task<IActionResult> ViewTables(int restaurantId)
-        {
-            var tables = await _bookingService.GetTablesByRestaurantIdAsync(restaurantId);
-
-            if (tables == null || !tables.Any())
-            {
-                return NoContent();
-            }
-
-            return Ok(tables);
+            return Created("", new {message = "Table created successfully"}); 
         }
 
         [HttpPut]

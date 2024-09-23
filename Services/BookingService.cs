@@ -1,11 +1,16 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Restaurant.Data.Repos;
 using Restaurant.Data.Repos.IRepos;
-using Restaurant.Migrations;
 using Restaurant.Models;
 using Restaurant.Models.DTOs;
+using Restaurant.Models.DTOs.ReservationDTOs;
+using Restaurant.Models.DTOs.RestaurantDTOs;
+using Restaurant.Models.DTOs.TableDTOs;
 using Restaurant.Services.IServices;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Restaurant.Services
 {
@@ -13,34 +18,72 @@ namespace Restaurant.Services
     {
         private readonly IReservationRepository _reservationRepository;
         private readonly ITableRepository _tableRepository;
+        private readonly ICustomerRepository _customerRepository;
 
-        public BookingService(IReservationRepository reservationRepository, ITableRepository tableRepository)
+        public BookingService(IReservationRepository reservationRepository, ITableRepository tableRepository, ICustomerRepository customerRepository)
         {
             _reservationRepository = reservationRepository;
             _tableRepository = tableRepository;
+            _customerRepository = customerRepository;
         }
 
-        public async Task BookTableAsync(int restaurantId, int customerId, DateTime startTime, DateTime endTime, int numberOfGuests)
+        public async Task<IEnumerable<TableDTO>> CheckAvailabilityAsync(AvailabilityCheckDTO checkDTO)
         {
-            var availableTable = await _tableRepository.GetAvailableTableAsync(restaurantId, startTime, endTime, numberOfGuests);
-            
-            if (availableTable != null)
-            {
-                var reservation = new Models.Reservation
-                {
-                    NumberOfGuests = numberOfGuests,
-                    BookingStart = startTime,
-                    BookingEnd = endTime,
-                    FK_CustomerId = customerId,
-                    FK_RestaurantId = restaurantId,
-                    FK_TableId = availableTable.Id
-                };
+            var availableTables = await _tableRepository.GetAvailableTablesAsync(
+                checkDTO.RestaurantId,
+                checkDTO.StartTime,
+                checkDTO.EndTime,
+                checkDTO.NumberOfGuests
+            );
 
-                await _reservationRepository.AddReservationAsync(reservation);
-            }
+            return availableTables.Select(t => new TableDTO
+            {
+                Id = t.Id,
+                TableNumber = t.TableNumber,
+                AmountOfSeats = t.AmountOfSeats,
+                FK_RestaurantId = t.FK_RestaurantId
+            }).ToList();
         }
 
-    public async Task DeleteReservationAsync(int reservationId)
+        public async Task BookTableAsync(AddReservationDTO reservationDTO, int customerId, int restaurantId)
+        {
+            var availableTables = await CheckAvailabilityAsync(new AvailabilityCheckDTO
+            {
+                RestaurantId = restaurantId,
+                StartTime = reservationDTO.BookingStart,
+                EndTime = reservationDTO.BookingEnd,
+                NumberOfGuests = reservationDTO.NumberOfGuests
+            });
+
+            var selectedTable = availableTables.FirstOrDefault();
+
+            if (selectedTable == null)
+            {
+                throw new Exception("No available tables found for the selected time and number of guests.");
+            }
+
+            var reservation = new Reservation
+            {
+                NumberOfGuests = reservationDTO.NumberOfGuests,
+                BookingStart = reservationDTO.BookingStart,
+                BookingEnd = reservationDTO.BookingEnd,
+                Message = reservationDTO.Message,
+                FK_CustomerId = customerId,
+                FK_RestaurantId = restaurantId,
+                FK_TableId = selectedTable.Id
+            };
+
+            var customer = await _customerRepository.SearchCustomerAsync(customerId);
+            if (customer != null)
+            {
+                customer.FK_RestaurantId = restaurantId;
+                await _customerRepository.UpdateCustomerAsync(customer);
+            }
+
+            await _reservationRepository.AddReservationAsync(reservation);
+        }
+
+        public async Task DeleteReservationAsync(int reservationId)
         {
             var reservation = await _reservationRepository.GetReservationByIdAsync(reservationId);
 
@@ -50,27 +93,34 @@ namespace Restaurant.Services
             }
         }
 
-        public async Task UpdateReservationAsync(int reservationId, ReservationDTO reservationDTO)
+        public async Task UpdateReservationAsync(int reservationId, UpdateReservationDTO reservationDTO)
         {
-            var reservation = await _reservationRepository.GetReservationByIdAsync(reservationId);
+            var existingReservation = await _reservationRepository.GetReservationByIdAsync(reservationId);
 
-            if (reservation != null)
+            if (existingReservation == null)
             {
-                reservation.NumberOfGuests = reservationDTO.NumberOfGuests;
-                reservation.BookingStart = reservationDTO.BookingStart;
-                reservation.BookingEnd = reservationDTO.BookingEnd;
-                reservation.FK_CustomerId = reservationDTO.FK_CustomerId;
-                reservation.FK_RestaurantId = reservationDTO.FK_RestaurantId;
-                reservation.FK_TableId = reservationDTO.FK_TableId;
-
-                await _reservationRepository.UpdateReservationAsync(reservation);
+                throw new Exception("Reservation not found.");
             }
+
+            existingReservation.NumberOfGuests = reservationDTO.NumberOfGuests;
+            existingReservation.BookingStart = reservationDTO.BookingStart;
+            existingReservation.BookingEnd = reservationDTO.BookingEnd;
+            existingReservation.Message = reservationDTO.Message;
+
+            if (!string.IsNullOrEmpty(reservationDTO.Message))
+            {
+                existingReservation.Message = reservationDTO.Message;
+            }
+
+            await _reservationRepository.UpdateReservationAsync(existingReservation);
         }
+
 
         public async Task<Models.Table> AddTableAsync(TableDTO tableDTO)
         {
             var table = new Models.Table
             {
+                Id = tableDTO.Id,
                 TableNumber = tableDTO.TableNumber,
                 AmountOfSeats = tableDTO.AmountOfSeats,
                 FK_RestaurantId = tableDTO.FK_RestaurantId,
@@ -79,18 +129,6 @@ namespace Restaurant.Services
             await _tableRepository.AddTableAsync(table);
 
             return table;
-        }
-
-        public async Task<IEnumerable<TableDTO>> GetTablesByRestaurantIdAsync(int restaurantId)
-        {
-            var tables = await _tableRepository.GetTablesByRestaurantIdAsync(restaurantId);
-
-            return tables.Select(t => new TableDTO
-            {
-                TableNumber = t.TableNumber,
-                AmountOfSeats = t.AmountOfSeats,
-                FK_RestaurantId = t.FK_RestaurantId
-            }).ToList();
         }
 
         public async Task UpdateTableAsync(int tableId, TableDTO tableDTO)
@@ -111,18 +149,17 @@ namespace Restaurant.Services
             await _tableRepository.DeleteTableAsync(tableId);
         }
 
-        public async Task<IEnumerable<ReservationDTO>> ViewAllReservationsAsync()
+        public async Task<IEnumerable<ViewReservationDTO>> ViewAllReservationsAsync()
         {
             var reservations = await _reservationRepository.ViewAllReservationsAsync();
 
-            return reservations.Select(r => new ReservationDTO
+            return reservations.Select(r => new ViewReservationDTO
             {
-                FK_CustomerId=r.FK_CustomerId,
-                FK_RestaurantId=r.FK_RestaurantId,
-                FK_TableId = r.FK_TableId,
-                BookingStart=r.BookingStart,
-                BookingEnd=r.BookingEnd,
-                NumberOfGuests=r.NumberOfGuests
+                CustomerName = r.Customer?.Name?? "",
+                NumberOfGuests = r.NumberOfGuests,
+                BookingStart = r.BookingStart,
+                BookingEnd = r.BookingEnd,
+                Message = r.Message
             }).ToList();
         }
     }

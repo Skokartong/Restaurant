@@ -103,9 +103,9 @@ namespace Restaurant.Data
             // Seed data for Customers
             modelBuilder.Entity<Customer>().HasData
             (
-                new Customer { Id = 1, Name = "John Doe", Phone = "123456790", Email = "john@example.com", FK_RestaurantId=null},
-                new Customer { Id = 2, Name = "Jane Smith", Phone = "98743210", Email = "jane@example.com", FK_RestaurantId=null},
-                new Customer { Id = 3, Name = "Alice Johnson", Phone = "65654654", Email = "alice@example.com", FK_RestaurantId=null}
+                new Customer { Id = 1, Name = "John Doe", Phone = "123456790", Email = "john@example.com", Address="One way street 1", FK_RestaurantId=null},
+                new Customer { Id = 2, Name = "Jane Smith", Phone = "98743210", Email = "jane@example.com", Address="Two way street 2", FK_RestaurantId=null},
+                new Customer { Id = 3, Name = "Alice Johnson", Phone = "65654654", Email = "alice@example.com", Address="Three way street 3", FK_RestaurantId=null}
             );
 
             // Seed data for Menus

@@ -1,5 +1,6 @@
 ﻿using Restaurant.Models;
-using Restaurant.Models.DTOs;
+using Restaurant.Models.DTOs.MenuDTOs;
+using Restaurant.Models.DTOs.OrderDTOs;
 
 namespace Restaurant.Services.IServices
 {
@@ -8,11 +9,11 @@ namespace Restaurant.Services.IServices
         Task AddOrderAsync(int menuId, OrderDTO orderDTO);
         Task UpdateOrderAsync(int orderId, OrderDTO orderDTO);
         Task DeleteOrderAsync(int orderId);
-        Task<OrderDTO> SearchOrderAsync(int orderId);
-        Task<IEnumerable<OrderDTO>> SeeAllOrdersFromTableAsync(int tableId);
-        Task<IEnumerable<MenuDTO>> SeeMenuAsync(int restaurantId);
-        Task<MenuDTO> SearchMenuItemAsync(int menuId);
-        Task AddDishOrDrinkAsync(MenuDTO menuItem);
+        Task<ViewOrderDTO> SearchOrderAsync(int orderId);
+        Task<IEnumerable<ViewOrderDTO>> SeeAllOrdersFromTableAsync(int tableId);
+        Task<IEnumerable<ViewMenuDTO>> SeeMenuAsync(int restaurantId);
+        Task<ViewMenuDTO> SearchMenuItemAsync(int menuId);
+        Task AddDishOrDrinkAsync(MenuDTO menuDTO);
         Task DeleteDishOrDrinkAsync(int menuId);
         Task UpdateDishOrDrinkAsync(int menuId, MenuDTO menuDTO);
     }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Restaurant.Data.Repos.IRepos;
-using Restaurant.Models.DTOs;
+using Restaurant.Models.DTOs.RestaurantDTOs;
 using Restaurant.Services.IServices;
 
 namespace Restaurant.Controllers
