@@ -156,6 +156,7 @@ namespace Restaurant.Services
             return reservations.Select(r => new ViewReservationDTO
             {
                 CustomerName = r.Customer?.Name?? "",
+                RestaurantName = r.Restaurant?.RestaurantName?? "",
                 NumberOfGuests = r.NumberOfGuests,
                 BookingStart = r.BookingStart,
                 BookingEnd = r.BookingEnd,

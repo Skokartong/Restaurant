@@ -46,6 +46,7 @@ namespace Restaurant.Data.Repos
         {
             var reservationList = await _context.Reservations
             .Include(r => r.Customer)
+            .Include(r => r.Restaurant)
             .AsNoTracking()
             .ToListAsync();
             return reservationList;
