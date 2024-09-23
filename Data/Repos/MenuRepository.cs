@@ -18,9 +18,9 @@ namespace Restaurant.Data.Repos
             return await _context.Menus.FindAsync(menuId);
         }
 
-        public async Task AddDishOrDrinkAsync(Menu menuItem)
+        public async Task AddDishOrDrinkAsync(Menu menu)
         {
-            await _context.Menus.AddAsync(menuItem);
+            await _context.Menus.AddAsync(menu);
             await _context.SaveChangesAsync();
         }
 
@@ -42,17 +42,17 @@ namespace Restaurant.Data.Repos
                      .ToListAsync();
         }
 
-        public async Task UpdateDishOrDrinkAsync(int menuId, Menu updateMenu)
+        public async Task UpdateDishOrDrinkAsync(int menuId, Menu updatedMenu)
         {
             var menuItem = await _context.Menus.FindAsync(menuId);
             
             if(menuItem!=null)
             {
-                menuItem.FK_RestaurantId = updateMenu.FK_RestaurantId;
-                menuItem.Drink = updateMenu.Drink;
-                menuItem.NameOfDish = updateMenu.NameOfDish;
-                menuItem.Price = updateMenu.Price;
-                menuItem.IsAvailable = updateMenu.IsAvailable;
+                menuItem.FK_RestaurantId = updatedMenu.FK_RestaurantId;
+                menuItem.Drink = updatedMenu.Drink;
+                menuItem.NameOfDish = updatedMenu.NameOfDish;
+                menuItem.Price = updatedMenu.Price;
+                menuItem.IsAvailable = updatedMenu.IsAvailable;
 
                 _context.Menus.Update(menuItem);
                 await _context.SaveChangesAsync();

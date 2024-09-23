@@ -36,9 +36,9 @@ namespace Restaurant.Data.Repos
             return await _context.Reservations.FindAsync(reservationId);
         }
 
-        public async Task UpdateReservationAsync(Reservation reservation)
+        public async Task UpdateReservationAsync(Reservation updatedReservation)
         {
-            _context.Reservations.Update(reservation);
+            _context.Reservations.Update(updatedReservation);
             await _context.SaveChangesAsync();
         }
 

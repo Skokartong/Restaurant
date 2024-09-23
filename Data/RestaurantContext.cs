@@ -22,6 +22,8 @@ namespace Restaurant.Data
 
         public DbSet<Order> Orders { get; set; }
 
+        public DbSet<Account> Accounts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configuring one-to-many relationship between Customer and Order
@@ -85,9 +87,9 @@ namespace Restaurant.Data
             // Seed data for Restaurants
             modelBuilder.Entity<Models.Restaurant>().HasData
             (
-                new Models.Restaurant { Id = 1, RestaurantName = "Italian Bistro", TypeOfRestaurant = "Italian" },
-                new Models.Restaurant { Id = 2, RestaurantName = "Sushi Palace", TypeOfRestaurant = "Japanese" },
-                new Models.Restaurant { Id = 3, RestaurantName = "Steak House", TypeOfRestaurant = "American" }
+                new Models.Restaurant { Id = 1, RestaurantName = "Italian Bistro", TypeOfRestaurant = "Italian", AdditionalInformation = "Authentic italian food. No ketchup!"},
+                new Models.Restaurant { Id = 2, RestaurantName = "Sushi Palace", TypeOfRestaurant = "Japanese", AdditionalInformation = "Vegetarian sushi is available" },
+                new Models.Restaurant { Id = 3, RestaurantName = "Steak House", TypeOfRestaurant = "American", AdditionalInformation = "More is less here!" }
             );
 
             // Seed data for Tables
@@ -127,17 +129,19 @@ namespace Restaurant.Data
                     FK_RestaurantId = 1,
                     NumberOfGuests = 2,
                     BookingStart = DateTime.Now.AddHours(1),
-                    BookingEnd = DateTime.Now.AddHours(3)
+                    BookingEnd = DateTime.Now.AddHours(3),
+                    Message = "Food better be good..."
                 },
                 new Reservation
                 {
                     Id = 2,
                     FK_CustomerId = 2,
                     FK_TableId = 3,
-                    FK_RestaurantId=2,
+                    FK_RestaurantId = 2,
                     NumberOfGuests = 3,
                     BookingStart = DateTime.Now.AddDays(1),
-                    BookingEnd = DateTime.Now.AddDays(1).AddHours(2)
+                    BookingEnd = DateTime.Now.AddDays(1).AddHours(2),
+                    Message = "One of us needs gluten free options in menu!"
                 }
                 );
         }

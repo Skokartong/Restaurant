@@ -6,9 +6,9 @@ namespace Restaurant.Data.Repos.IRepos
     public interface IReservationRepository
     {
         Task AddReservationAsync(Reservation reservation);
-        Task<Reservation> GetReservationByIdAsync(int reservationId);
-        Task UpdateReservationAsync(Reservation reservation);
         Task DeleteReservationAsync(int reservationId);
+        Task UpdateReservationAsync(Reservation updatedReservation);
+        Task<Reservation> GetReservationByIdAsync(int reservationId);
         Task<IEnumerable<Reservation>> ViewAllReservationsAsync();
     }
 }
