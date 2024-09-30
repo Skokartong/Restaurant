@@ -13,6 +13,13 @@ namespace Restaurant.Data.Repos
             _context = context;
         }
 
+        public async Task<IEnumerable<Table>> GetTablesByRestaurantIdAsync(int restaurantId)
+        {
+            return await _context.Tables
+                .Where(t => t.FK_RestaurantId == restaurantId)
+                .ToListAsync();
+        }
+
         public async Task AddTableAsync(Table table)
         {
             await _context.Tables.AddAsync(table);

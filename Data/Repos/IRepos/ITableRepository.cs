@@ -4,6 +4,7 @@ namespace Restaurant.Data.Repos.IRepos
 {
     public interface ITableRepository
     {
+        Task<IEnumerable<Table>> GetTablesByRestaurantIdAsync(int restaurantId);
         Task AddTableAsync(Table table);
         Task DeleteTableAsync(int tableId);
         Task UpdateTableAsync(int tableId, Table updatedTable);

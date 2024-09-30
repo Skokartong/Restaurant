@@ -51,5 +51,15 @@ namespace Restaurant.Data.Repos
             .ToListAsync();
             return reservationList;
         }
+
+        public async Task<IEnumerable<Reservation>> GetReservationsByCustomerAsync(int customerId)
+        {
+            return await _context.Reservations
+                .Where(r => r.FK_CustomerId == customerId)
+                .Include(r => r.Customer)
+                .Include(r => r.Restaurant)
+                .AsNoTracking()
+                .ToListAsync();
+        }
     }
 }

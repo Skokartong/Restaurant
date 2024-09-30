@@ -16,5 +16,7 @@ namespace Restaurant.Services.IServices
         Task DeleteReservationAsync(int reservationId);
         Task<IEnumerable<TableDTO>> CheckAvailabilityAsync(AvailabilityCheckDTO checkDTO);
         Task BookTableAsync(AddReservationDTO reservationDTO, int customerId, int restaurantId);
+        Task<IEnumerable<TableDTO>> GetTablesByRestaurantIdAsync(int restaurantId);
+        Task<IEnumerable<ViewReservationDTO>> GetReservationsByCustomerAsync(int customerId);
     }
 }

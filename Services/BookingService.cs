@@ -27,6 +27,20 @@ namespace Restaurant.Services
             _customerRepository = customerRepository;
         }
 
+        public async Task<IEnumerable<TableDTO>> GetTablesByRestaurantIdAsync(int restaurantId)
+        {
+            var tables = await _tableRepository.GetTablesByRestaurantIdAsync(restaurantId);
+
+            return tables.Select(t => new TableDTO
+            {
+                Id = t.Id,
+                TableNumber = t.TableNumber,
+                AmountOfSeats = t.AmountOfSeats,
+                FK_RestaurantId = t.FK_RestaurantId
+            }).ToList();
+        }
+
+
         public async Task AddTableAsync(TableDTO tableDTO)
         {
             var table = new Models.Table
@@ -154,6 +168,21 @@ namespace Restaurant.Services
             {
                 CustomerName = r.Customer?.Name?? "",
                 RestaurantName = r.Restaurant?.RestaurantName?? "",
+                NumberOfGuests = r.NumberOfGuests,
+                BookingStart = r.BookingStart,
+                BookingEnd = r.BookingEnd,
+                Message = r.Message
+            }).ToList();
+        }
+
+        public async Task<IEnumerable<ViewReservationDTO>> GetReservationsByCustomerAsync(int customerId)
+        {
+            var reservations = await _reservationRepository.GetReservationsByCustomerAsync(customerId);
+
+            return reservations.Select(r => new ViewReservationDTO
+            {
+                CustomerName = r.Customer?.Name ?? "",
+                RestaurantName = r.Restaurant?.RestaurantName ?? "",
                 NumberOfGuests = r.NumberOfGuests,
                 BookingStart = r.BookingStart,
                 BookingEnd = r.BookingEnd,

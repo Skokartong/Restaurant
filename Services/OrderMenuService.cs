@@ -65,7 +65,7 @@ namespace Restaurant.Services
                 NameOfDish = m.NameOfDish,
                 Drink = m.Drink,
                 Price = m.Price,
-                IsAvailable = m.IsAvailable,
+                FK_RestaurantId = m.FK_RestaurantId
             }).ToList();
         }
 
@@ -164,7 +164,7 @@ namespace Restaurant.Services
                 Drink = menuItem.Drink,
                 Ingredients = menuItem.Ingredients,
                 Price = menuItem.Price,
-                IsAvailable = menuItem.IsAvailable,
+                FK_RestaurantId = menuItem.FK_RestaurantId
             };
         }
     }

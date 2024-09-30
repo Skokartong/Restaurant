@@ -10,5 +10,6 @@ namespace Restaurant.Data.Repos.IRepos
         Task UpdateReservationAsync(Reservation updatedReservation);
         Task<Reservation> GetReservationByIdAsync(int reservationId);
         Task<IEnumerable<Reservation>> ViewAllReservationsAsync();
+        Task<IEnumerable<Reservation>> GetReservationsByCustomerAsync(int customerId);
     }
 }
