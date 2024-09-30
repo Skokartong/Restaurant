@@ -75,15 +75,15 @@ namespace Restaurant.Controllers
             }
         }
 
-        // Customer Controller
         [HttpPost]
         [Route("/booktable")]
-        public async Task<IActionResult> BookTable([FromBody] AddReservationDTO reservationDTO, int customerId, int restaurantId)
+        public async Task<IActionResult> BookTable([FromBody] AddReservationDTO reservationDTO)
         {
             try
             {
-                await _bookingService.BookTableAsync(reservationDTO, customerId, restaurantId);
-                return Created("", new { message = "Table booked successfully" });
+                var result = await _bookingService.BookTableAsync(reservationDTO);
+
+                return Created("", new { message = result });
             }
             catch (Exception ex)
             {
@@ -118,10 +118,10 @@ namespace Restaurant.Controllers
 
             if (tables == null || !tables.Any())
             {
-                return NoContent(); // Inga bord hittades
+                return NoContent(); 
             }
 
-            return Ok(tables); // Returnera listan med bord
+            return Ok(tables); 
         }
 
         // Admin Controller

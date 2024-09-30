@@ -90,16 +90,17 @@ namespace Restaurant.Services
             }).ToList();
         }
 
-        public async Task BookTableAsync(AddReservationDTO reservationDTO, int customerId, int restaurantId)
+        public async Task<string> BookTableAsync(AddReservationDTO reservationDTO)
         {
-            var availableTables = await CheckAvailabilityAsync(new AvailabilityCheckDTO
+            var availabilityCheck = new AvailabilityCheckDTO
             {
-                RestaurantId = restaurantId,
+                RestaurantId = reservationDTO.RestaurantId,
                 StartTime = reservationDTO.BookingStart,
                 EndTime = reservationDTO.BookingEnd,
                 NumberOfGuests = reservationDTO.NumberOfGuests
-            });
+            };
 
+            var availableTables = await CheckAvailabilityAsync(availabilityCheck);
             var selectedTable = availableTables.FirstOrDefault();
 
             if (selectedTable == null)
@@ -113,20 +114,16 @@ namespace Restaurant.Services
                 BookingStart = reservationDTO.BookingStart,
                 BookingEnd = reservationDTO.BookingEnd,
                 Message = reservationDTO.Message,
-                FK_CustomerId = customerId,
-                FK_RestaurantId = restaurantId,
+                FK_CustomerId = reservationDTO.CustomerId, 
+                FK_RestaurantId = reservationDTO.RestaurantId, 
                 FK_TableId = selectedTable.Id
             };
 
-            var customer = await _customerRepository.SearchCustomerAsync(customerId);
-            if (customer != null)
-            {
-                customer.FK_RestaurantId = restaurantId;
-                await _customerRepository.UpdateCustomerAsync(customer);
-            }
-
             await _reservationRepository.AddReservationAsync(reservation);
+
+            return "Table booked successfully";
         }
+
 
         public async Task DeleteReservationAsync(int reservationId)
         {
