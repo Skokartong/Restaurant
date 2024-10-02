@@ -62,19 +62,19 @@ namespace Restaurant.Services
 
         public async Task UpdateAccountAsync(int accountId, UpdateAccountDTO accountDTO)
         {
-                var existingAccount = await _accountRepository.FindAccountByIdAsync(accountId);
+            var existingAccount = await _accountRepository.FindAccountByIdAsync(accountId);
 
-                if (existingAccount != null)
+            if (existingAccount != null)
+            {
+                existingAccount.UserName = accountDTO.UserName;
+                existingAccount.Email = accountDTO.Email;
+                if (!string.IsNullOrEmpty(accountDTO.Password))
                 {
-                    existingAccount.UserName = accountDTO.UserName;
-                    existingAccount.Email = accountDTO.Email;
-                    if (!string.IsNullOrEmpty(accountDTO.Password))
-                    {
-                        existingAccount.PasswordHash = BCrypt.Net.BCrypt.HashPassword(accountDTO.Password);
-                    }
-
-                    await _accountRepository.UpdateAccountAsync(accountId, existingAccount);
+                    existingAccount.PasswordHash = BCrypt.Net.BCrypt.HashPassword(accountDTO.Password);
                 }
+
+                await _accountRepository.UpdateAccountAsync(accountId, existingAccount);
+            }
         }
 
         public async Task<string> LogInAsync(LogInDTO logInDTO)
@@ -90,19 +90,30 @@ namespace Restaurant.Services
             {
                 return GenerateJwtToken(existingUser, "Admin");
             }
-
-            return GenerateJwtToken(existingUser, "User");
+                return GenerateJwtToken(existingUser, "User");
         }
 
         private string GenerateJwtToken(Account account, string role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            byte[] key = Encoding.UTF8.GetBytes(_configuration["JwtKey"]);
+
+            var key = _configuration["JwtKey"];
             var issuer = _configuration["JwtIssuer"];
             var audience = _configuration["JwtAudience"];
 
+            Console.WriteLine($"Key: {key}");
+            Console.WriteLine($"Issuer: {issuer}");
+            Console.WriteLine($"Audience: {audience}");
+
+            if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
+            {
+                throw new Exception("JWT configuration values are missing.");
+            }
+
+            var keyBytes = Encoding.UTF8.GetBytes(key);
 
             var claims = new ClaimsIdentity(new[]{
+                new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
                 new Claim(ClaimTypes.Name, $"{account.FirstName} {account.LastName}"),
                 new Claim(ClaimTypes.Email, $"{account.Email}"),
                 new Claim(ClaimTypes.Role, role)
@@ -114,7 +125,7 @@ namespace Restaurant.Services
                 Expires = DateTime.UtcNow.AddMinutes(15),
                 Issuer = issuer,
                 Audience = audience,
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);

@@ -15,7 +15,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Loading Environment variables
 Env.Load();
 
-// Adding DbContext in our DI-container 
 builder.Services.AddDbContext<RestaurantContext>(options =>
     options.UseSqlServer(Environment.GetEnvironmentVariable("DefaultConnection")));
 
@@ -24,6 +23,13 @@ builder.Configuration.AddEnvironmentVariables();
 var key = builder.Configuration["JwtKey"];
 var issuer = builder.Configuration["JwtIssuer"];
 var audience = builder.Configuration["JwtAudience"];
+
+if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(issuer) || string.IsNullOrEmpty(audience))
+{
+    throw new Exception("JWT configuration values are missing.");
+}
+
+var keyBytes = Encoding.UTF8.GetBytes(key);
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -38,14 +44,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuerSigningKey = true,
             ValidIssuer = issuer,
             ValidAudience = audience,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(key)),
+            IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
         };
     });
 
 // CORS-config to allow cross origin access
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("ClientAppCorsPolicy",
+    options.AddPolicy("AllowClientMvc",
         builder => builder.WithOrigins("https://localhost:7135/")
                           .AllowAnyMethod()
                           .AllowAnyHeader());
@@ -70,7 +76,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseCors("ClientAppCorsPolicy");
+app.UseCors("AllowClientMvc");
 app.UseAuthentication();
 app.UseAuthorization();
 
