@@ -62,15 +62,19 @@ namespace Restaurant.Services
 
         public async Task UpdateAccountAsync(int accountId, UpdateAccountDTO accountDTO)
         {
-            var updatedAccount = new Account
-            {
-                Id = accountId,
-                UserName = accountDTO.UserName,
-                Email = accountDTO.Email,
-                PasswordHash = accountDTO.Password,
-            };
+                var existingAccount = await _accountRepository.FindAccountByIdAsync(accountId);
 
-            await _accountRepository.UpdateAccountAsync(accountId, updatedAccount);
+                if (existingAccount != null)
+                {
+                    existingAccount.UserName = accountDTO.UserName;
+                    existingAccount.Email = accountDTO.Email;
+                    if (!string.IsNullOrEmpty(accountDTO.Password))
+                    {
+                        existingAccount.PasswordHash = BCrypt.Net.BCrypt.HashPassword(accountDTO.Password);
+                    }
+
+                    await _accountRepository.UpdateAccountAsync(accountId, existingAccount);
+                }
         }
 
         public async Task<string> LogInAsync(LogInDTO logInDTO)

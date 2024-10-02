@@ -57,9 +57,12 @@ namespace Restaurant.Data.Repos
 
             if (existingAccount != null)
             {
-                _context.Accounts.Update(updatedAccount);
+                existingAccount.UserName = updatedAccount.UserName;
+                existingAccount.Email = updatedAccount.Email;
+                existingAccount.PasswordHash = updatedAccount.PasswordHash;
+
                 await _context.SaveChangesAsync();
-            };
+            }
         }
     }
 }
