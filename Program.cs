@@ -45,8 +45,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // CORS-config to allow cross origin access
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins",
-        builder => builder.AllowAnyOrigin()
+    options.AddPolicy("ClientAppCorsPolicy",
+        builder => builder.WithOrigins("https://localhost:7135/")
                           .AllowAnyMethod()
                           .AllowAnyHeader());
 });
@@ -70,7 +70,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseCors("AllowAllOrigins");
+app.UseCors("ClientAppCorsPolicy");
 app.UseAuthentication();
 app.UseAuthorization();
 
