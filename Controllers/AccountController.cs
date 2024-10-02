@@ -33,7 +33,7 @@ namespace Restaurant.Controllers
         }
 
         [HttpPut]
-        [Route("/updateaccount")]
+        [Route("/updateaccount/{accountId}")]
         public async Task<IActionResult> UpdateAccount(int accountId, [FromBody] UpdateAccountDTO accountDTO)
         {
             await _accountService.UpdateAccountAsync(accountId, accountDTO);
@@ -41,7 +41,7 @@ namespace Restaurant.Controllers
         }
 
         [HttpDelete]
-        [Route("/deleteaccount")]
+        [Route("/deleteaccount/{accountId}")]
         public async Task<IActionResult> DeleteAccount(int accountId)
         {
             await _accountService.DeleteAccountAsync(accountId);
