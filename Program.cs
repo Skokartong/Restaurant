@@ -18,7 +18,7 @@ Env.Load();
 builder.Services.AddDbContext<RestaurantContext>(options =>
     options.UseSqlServer(Environment.GetEnvironmentVariable("DefaultConnection")));
 
-builder.Configuration.AddEnvironmentVariables(); 
+builder.Configuration.AddEnvironmentVariables();
 
 var key = builder.Configuration["JwtKey"];
 var issuer = builder.Configuration["JwtIssuer"];
@@ -30,6 +30,7 @@ if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(issuer) || string.IsNullOr
 }
 
 var keyBytes = Encoding.UTF8.GetBytes(key);
+builder.Services.AddHttpContextAccessor();
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -45,6 +46,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = issuer,
             ValidAudience = audience,
             IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
+            RoleClaimType = "role",
+            NameClaimType = "name"
         };
     });
 

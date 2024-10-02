@@ -90,10 +90,10 @@ namespace Restaurant.Services
             {
                 return GenerateJwtToken(existingUser, "Admin");
             }
-                return GenerateJwtToken(existingUser, "User");
+            return GenerateJwtToken(existingUser, "User");
         }
 
-        private string GenerateJwtToken(Account account, string role)
+        private string GenerateJwtToken(Account existingUser, string role)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -110,18 +110,19 @@ namespace Restaurant.Services
                 throw new Exception("JWT configuration values are missing.");
             }
 
-            var keyBytes = Encoding.UTF8.GetBytes(key);
+            byte[] keyBytes = Encoding.UTF8.GetBytes(key);
 
-            var claims = new ClaimsIdentity(new[]{
-                new Claim(ClaimTypes.NameIdentifier, account.Id.ToString()),
-                new Claim(ClaimTypes.Name, $"{account.FirstName} {account.LastName}"),
-                new Claim(ClaimTypes.Email, $"{account.Email}"),
-                new Claim(ClaimTypes.Role, role)
-            });
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, existingUser.Id.ToString()),
+                new Claim(ClaimTypes.Name, $"{existingUser.FirstName} {existingUser.LastName}"),
+                new Claim(ClaimTypes.Email, existingUser.Email),
+                new Claim("role", role)
+            };
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = claims,
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddMinutes(15),
                 Issuer = issuer,
                 Audience = audience,
