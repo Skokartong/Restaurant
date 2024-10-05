@@ -19,7 +19,6 @@ namespace Restaurant.Controllers
             _orderMenuService = orderMenuService;
         }
 
-        // Admin Controller
         [HttpPost]
         [Route("/addmenuitem")]
         public async Task<IActionResult> AddMenu([FromBody] MenuDTO menuDTO)
@@ -28,7 +27,6 @@ namespace Restaurant.Controllers
             return Created("", menuDTO);
         }
 
-        // Admin Controller
         [HttpDelete]
         [Route("/deletedish/{menuId}")]
         public async Task<IActionResult> DeleteMenu(int menuId)
@@ -37,7 +35,6 @@ namespace Restaurant.Controllers
             return NoContent();
         }
 
-        // Admin Controller
         [HttpPut]
         [Route("/updatemenuitem/{menuId}")]
         public async Task<IActionResult> UpdateMenu(int menuId, [FromBody] MenuDTO menuDTO)
@@ -46,7 +43,6 @@ namespace Restaurant.Controllers
             return Ok(menuDTO);
         }
 
-        // Menu Controller
         [HttpGet]
         [Route("/viewdish/{menuId}")]
         public async Task<ActionResult<ViewMenuDTO>> GetMenuItem(int menuId)
@@ -59,7 +55,6 @@ namespace Restaurant.Controllers
             return Ok(menuItem);
         }
 
-        // Menu Controller
         [HttpGet]
         [Route("/viewmenu/{restaurantId}")]
         public async Task<ActionResult<List<ViewMenuDTO>>> GetMenu(int restaurantId)
@@ -68,7 +63,6 @@ namespace Restaurant.Controllers
             return Ok(menu);
         }
 
-        // Customer Controller
         [HttpPost]
         [Route("/addorder")]
         public async Task<IActionResult> AddOrder(int menuId, [FromBody] OrderDTO orderDTO)
@@ -77,7 +71,6 @@ namespace Restaurant.Controllers
             return Created("", orderDTO);
         }
 
-        // Customer Controller
         [HttpDelete]
         [Route("/deleteorder/{orderId}")]
         public async Task<IActionResult> DeleteOrder(int orderId)
@@ -86,7 +79,6 @@ namespace Restaurant.Controllers
             return NoContent();
         }
 
-        // Customer Controller
         [HttpPut]
         [Route("/updateorder/{orderId}")]
         public async Task<IActionResult> UpdateOrder(int orderId,[FromBody] OrderDTO orderDTO)
@@ -101,7 +93,6 @@ namespace Restaurant.Controllers
             return NoContent();
         }
 
-        // Admin Controller
         [HttpGet]
         [Route("/getorder/{orderId}")]
         public async Task<ActionResult<ViewOrderDTO>> GetOrder(int orderId)
@@ -114,7 +105,6 @@ namespace Restaurant.Controllers
             return Ok(order);
         }
 
-        // Admin Controller
         [HttpGet]
         [Route("/vieworders/{tableId}")]
         public async Task<ActionResult<List<ViewOrderDTO>>> GetOrdersByTable(int tableId)

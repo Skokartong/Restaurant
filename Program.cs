@@ -34,6 +34,8 @@ builder.Services.AddHttpContextAccessor();
 
 // Add services to the container.
 builder.Services.AddControllers();
+builder.Services.AddRazorPages();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -51,13 +53,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-// CORS-config to allow cross origin access
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowClientMvc",
-        builder => builder.WithOrigins("https://localhost:7135/")
-                          .AllowAnyMethod()
-                          .AllowAnyHeader());
+    options.AddPolicy("LocalReact", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173/")
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+    });
+
+
+    options.AddPolicy("AllowClientMvc", policy =>
+    {
+        policy.WithOrigins("http://localhost:7135/")
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+    });
 });
 
 builder.Services.AddAuthorization();
@@ -79,6 +90,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseCors("LocalReact");
 app.UseCors("AllowClientMvc");
 app.UseAuthentication();
 app.UseAuthorization();
@@ -95,5 +107,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapRazorPages();
 app.Run();

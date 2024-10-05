@@ -20,7 +20,6 @@ namespace Restaurant.Controllers
             _bookingService = bookingService;
         }
 
-        // Admin Controller
         [HttpGet]
         [Route("/allbookings")]
         public async Task<IActionResult> ViewBookings()
@@ -55,7 +54,6 @@ namespace Restaurant.Controllers
             }
         }
 
-        // Menu Controller
         [HttpPost]
         [Route("/checkavailability")]
         public async Task<IActionResult> CheckAvailability([FromBody] AvailabilityCheckDTO checkDTO)
@@ -91,7 +89,6 @@ namespace Restaurant.Controllers
             }
         }
 
-        // Customer Controller
         [HttpDelete]
         [Route("/deletebooking/{reservationId}")]
         public async Task<IActionResult> DeleteReservation(int reservationId)
@@ -100,7 +97,6 @@ namespace Restaurant.Controllers
             return NoContent();
         }
 
-        // Customer Controller
         [HttpPut]
         [Route("/updatebooking/{reservationId}")]
         public async Task<IActionResult> UpdateReservation(int reservationId,[FromBody] UpdateReservationDTO reservationDTO)
@@ -109,7 +105,6 @@ namespace Restaurant.Controllers
             return NoContent(); 
         }
 
-        // Admin Controller
         [HttpGet]
         [Route("/viewtables/{restaurantId}")]
         public async Task<IActionResult> ViewTables(int restaurantId)
@@ -124,7 +119,6 @@ namespace Restaurant.Controllers
             return Ok(tables); 
         }
 
-        // Admin Controller
         [HttpPost]
         [Route("/addtable")]
         public async Task<IActionResult> AddTable([FromBody] TableDTO tableDTO)
@@ -133,7 +127,6 @@ namespace Restaurant.Controllers
             return Created("", new {message = "Table created successfully"}); 
         }
 
-        // Admin Controller
         [HttpPut]
         [Route("/updatetable/{tableId}")]
         public async Task<IActionResult> UpdateTable(int tableId,[FromBody] TableDTO tableDTO)
@@ -142,7 +135,6 @@ namespace Restaurant.Controllers
             return NoContent(); 
         }
 
-        // Admin Controller
         [HttpDelete]
         [Route("/deletetable/{tableId}")]
         public async Task<IActionResult> DeleteTable(int tableId)

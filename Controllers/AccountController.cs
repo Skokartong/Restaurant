@@ -16,12 +16,49 @@ namespace Restaurant.Controllers
             _accountService = accountService;
         }
 
+        [HttpGet]
+        [Route("/accounts")]
+        public async Task<IActionResult> GetAllAccounts()
+        {
+            var accounts = await _accountService.GetAllAccountsAsync();
+            return Ok(accounts);
+        }
+
+        [HttpGet]
+        [Route("/accounts/{accountId}")]
+        public async Task<IActionResult> GetAccountById(int accountId)
+        {
+            var account = await _accountService.GetAccountByIdAsync(accountId);
+            if (account == null)
+            {
+                return NotFound(new { message = "Account not found" });
+            }
+            return Ok(account);
+        }
+
         [HttpPost]
         [Route("/register")]
         public async Task<IActionResult> NewAccount([FromBody] NewAccountDTO accountDTO)
         {
-            await _accountService.AddAccountAsync(accountDTO);
-            return Created("", new {message = "Account created successfully" });
+            try
+            {
+                await _accountService.AddAccountAsync(accountDTO);
+                return Created("", new { message = "Account created successfully" });
+            }
+
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Email is already taken"))
+                {
+                    return BadRequest("Email is already taken");
+                }
+                if (ex.Message.Contains("Username is already taken"))
+                {
+                    return BadRequest("Username is already taken");
+                }
+
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPost]

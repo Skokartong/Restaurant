@@ -17,7 +17,6 @@ namespace Restaurant.Controllers
             _restaurantService = restaurantService;
         }
 
-        // Admin Controller
         [HttpPost]
         [Route("/addrestaurant")]
         public async Task<IActionResult> AddRestaurant([FromBody] RestaurantDTO restaurantDTO)
@@ -26,7 +25,6 @@ namespace Restaurant.Controllers
             return Created("", restaurantDTO);
         }
 
-        // Admin Controller
         [HttpDelete]
         [Route("/deleterestaurant/{restaurantId}")]
         public async Task<IActionResult> DeleteRestaurant(int restaurantId)
@@ -35,7 +33,6 @@ namespace Restaurant.Controllers
             return NoContent();
         }
 
-        // Admin Controller
         [HttpPut]
         [Route("/updaterestaurant/{restaurantId}")]
         public async Task<IActionResult> UpdateRestaurant(int restaurantId, [FromBody] RestaurantDTO restaurantDTO)
@@ -44,7 +41,6 @@ namespace Restaurant.Controllers
             return NoContent();
         }
 
-        // Menu Controller
         [HttpGet]
         [Route("/viewrestaurant/{restaurantId}")]
         public async Task<ActionResult<RestaurantDTO>> GetRestaurant(int restaurantId)
@@ -57,7 +53,6 @@ namespace Restaurant.Controllers
             return Ok(restaurant);
         }
 
-        // Menu Controller
         [HttpGet]
         [Route("/viewallrestaurants")]
         public async Task<IActionResult> ViewAllRestaurants()

@@ -17,7 +17,6 @@ namespace Restaurant.Controllers
             _customerService = customerService;
         }
 
-        // Admin Controller
         [HttpPost]
         [Route("/addcustomer")]
         public async Task<IActionResult> AddCustomer([FromBody] CustomerDTO customerDTO)
@@ -26,7 +25,6 @@ namespace Restaurant.Controllers
             return Created("", customerDTO);
         }
 
-        // Admin Controller
         [HttpDelete]
         [Route("/deletecustomer")]
         public async Task<IActionResult> DeleteCustomer(int customerId)
@@ -35,7 +33,6 @@ namespace Restaurant.Controllers
             return Ok(new { Message = $"Customer with ID {customerId} has been deleted." });
         }
 
-        // Admin Controller
         [HttpGet]
         [Route("/viewcustomer/{customerId}")]
         public async Task<IActionResult> SearchCustomer(int customerId)
@@ -50,7 +47,6 @@ namespace Restaurant.Controllers
             return Ok(customer);
         }
 
-        // Admin Controller
         [HttpGet]
         [Route("/viewcustomers")]
         public async Task<IActionResult> SeeAllCustomers()
@@ -65,7 +61,6 @@ namespace Restaurant.Controllers
             return Ok(customers);
         }
 
-        // Admin Controller
         [HttpPut]
         [Route("/updatecustomer/{customerId}")]
         public async Task<IActionResult> UpdateCustomer(int customerId,[FromBody] CustomerDTO customerDTO)

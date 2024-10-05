@@ -46,7 +46,12 @@ namespace Restaurant.Data.Repos
             }
         }
 
-        public async Task<Account?> FindAccountByIdAsync(int accountId)
+        public async Task<List<Account>> GetAllAccountsAsync()
+        {
+            return await _context.Accounts.ToListAsync();
+        }
+
+        public async Task<Account?> GetAccountByIdAsync(int accountId)
         {
             return await _context.Accounts.FindAsync(accountId);
         }

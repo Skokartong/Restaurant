@@ -62,7 +62,7 @@ namespace Restaurant.Services
 
         public async Task UpdateAccountAsync(int accountId, UpdateAccountDTO accountDTO)
         {
-            var existingAccount = await _accountRepository.FindAccountByIdAsync(accountId);
+            var existingAccount = await _accountRepository.GetAccountByIdAsync(accountId);
 
             if (existingAccount != null)
             {
@@ -75,6 +75,16 @@ namespace Restaurant.Services
 
                 await _accountRepository.UpdateAccountAsync(accountId, existingAccount);
             }
+        }
+
+        public async Task<List<Account>> GetAllAccountsAsync()
+        {
+            return await _accountRepository.GetAllAccountsAsync();
+        }
+
+        public async Task<Account?> GetAccountByIdAsync(int accountId)
+        {
+            return await _accountRepository.GetAccountByIdAsync(accountId);
         }
 
         public async Task<string> LogInAsync(LogInDTO logInDTO)
