@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Loading Environment variables
 Env.Load();
 
 builder.Services.AddDbContext<RestaurantContext>(options =>
@@ -32,7 +31,6 @@ if (string.IsNullOrEmpty(key) || string.IsNullOrEmpty(issuer) || string.IsNullOr
 var keyBytes = Encoding.UTF8.GetBytes(key);
 builder.Services.AddHttpContextAccessor();
 
-// Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddRazorPages();
 
@@ -61,7 +59,6 @@ builder.Services.AddCors(options =>
         .AllowAnyMethod()
         .AllowAnyHeader();
     });
-
 
     options.AddPolicy("AllowClientMvc", policy =>
     {
@@ -95,7 +92,6 @@ app.UseCors("AllowClientMvc");
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -103,9 +99,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseRouting(); 
+
+app.UseHttpMethodOverride();
 
 app.UseAuthorization();
 
 app.MapControllers();
 app.MapRazorPages();
 app.Run();
+

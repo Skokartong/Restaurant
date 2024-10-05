@@ -20,13 +20,19 @@ namespace Restaurant.Data.Repos
 
         public async Task DeleteCustomerAsync(int customerId)
         {
-            var deleteCustomer = await _context.Customers.FindAsync(customerId);
+            var deleteCustomer = await _context.Customers
+                                   .Include(c => c.Reservations) 
+                                   .FirstOrDefaultAsync(c => c.Id == customerId); 
 
-            if(deleteCustomer!=null)
+            if (deleteCustomer == null)
             {
-                _context.Customers.Remove(deleteCustomer);
-                await _context.SaveChangesAsync();
+                throw new InvalidOperationException($"Customer with id {customerId} not found");
             }
+
+            _context.Reservations.RemoveRange(deleteCustomer.Reservations); 
+
+            _context.Customers.Remove(deleteCustomer);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Customer?> SearchCustomerAsync(int customerId)

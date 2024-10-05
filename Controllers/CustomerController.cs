@@ -27,7 +27,7 @@ namespace Restaurant.Controllers
 
         [HttpDelete]
         [Route("/deletecustomer")]
-        public async Task<IActionResult> DeleteCustomer(int customerId)
+        public async Task<IActionResult> DeleteCustomer([FromQuery] int customerId)
         {
             await _customerService.DeleteCustomerAsync(customerId);
             return Ok(new { Message = $"Customer with ID {customerId} has been deleted." });

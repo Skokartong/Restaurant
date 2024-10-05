@@ -42,6 +42,7 @@ namespace Restaurant.Services
 
             return new CustomerDTO
             {
+                Id = customer.Id,
                 Name = customer.Name,
                 Email = customer.Email,
                 Phone = customer.Phone,
@@ -60,6 +61,7 @@ namespace Restaurant.Services
 
             return customersList.Select(c => new CustomerDTO
             {
+                Id = c.Id,
                 Name = c.Name,
                 Email = c.Email,
                 Phone = c.Phone,
@@ -84,6 +86,7 @@ namespace Restaurant.Services
 
             return new CustomerDTO
             {
+                Id = updatedCustomer.Id,
                 Name = updatedCustomer.Name,
                 Phone = updatedCustomer.Phone,
                 Email = updatedCustomer.Email,
